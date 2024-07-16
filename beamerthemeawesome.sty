@@ -556,7 +556,56 @@
 \newcommand{\profilepic}{data/presentation/images/Me.jpg}
 
 \AtEndDocument{
+
 	{\setbeamercolor{background canvas}{bg=accent}
+			\begin{frame}[t,noframenumbering]
+				\thispagestyle{navigation@titlepage}
+				\setbeamercolor{normal text}{fg=white}
+				\setbeamercolor{section in toc}{fg=white}
+				\setbeamercolor{subsection in toc}{fg=white}
+				\setbeamercolor{section number projected}{bg=white, fg=accent}
+				\frametitle{\textcolor{white}{Thanks for listening}}
+
+				\begin{columns}
+					\begin{column}{1.0\textwidth}
+						\vspace{-2cm}
+						\centering
+						\large
+						\color{white}
+						Thank you for your attention!
+					\end{column}
+				\end{columns}
+				\vfill
+				\vspace{1.5cm}
+				\begin{columns}
+					\color{black}
+					\begin{column}{0.45\textwidth}
+						\vfill
+						\flushleft
+						\large
+						\faGlobe\ \href{https://jonasheinle.de}{jonasheinle.de}
+						\\
+						\faEnvelope\ \href{mailto:contact@jonasheinle.de}{contact@jonasheinle.de}
+						\\
+						\faYoutube\ \href{https://www.youtube.com/@jotrockenmitlocken}{youtube.com/@jotrockenmitlocken}
+					\end{column}
+					\begin{column}{0.45\textwidth}
+						\vfill
+						\flushleft
+						\large
+						\faGithub\ \href{https://github.com/Kataglyphis}{github.com/Kataglyphis}
+						\\
+						\faLinkedin\ \href{https://www.linkedin.com/in/jonas-heinle-0b2a301a0/}{linkedin.com/in/jonas-heinle-0b2a301a0/}
+						\\
+						\faInstagram\ \href{https://www.instagram.com/jotrockenmitlocken}{instagram.com/jotrockenmitlocken}
+					\end{column}
+					\begin{column}{0.1\textwidth}
+						\vfill
+					\end{column}
+				\end{columns}
+			\end{frame}}
+
+		{\setbeamercolor{background canvas}{bg=accent}
 			\begin{frame}[t,noframenumbering]
 				\thispagestyle{navigation@titlepage}
 				\setbeamercolor{normal text}{fg=white}
