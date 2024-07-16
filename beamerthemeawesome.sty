@@ -32,6 +32,7 @@
 \RequirePackage{microtype}
 \RequirePackage{etoolbox}
 \RequirePackage{tcolorbox}
+\usepackage{fontawesome5}
 \tcbuselibrary{skins}
 \RequirePackage[
 	tikz,
@@ -552,15 +553,71 @@
 		\end{frame}
 	\fi}
 
+\newcommand{\profilepic}{data/presentation/images/Me.jpg}
+
 \AtEndDocument{
 	{\setbeamercolor{background canvas}{bg=accent}
-			\begin{frame}[b,noframenumbering]\thispagestyle{navigation@titlepage}%
-				\begin{wide}\color{white}%
-					\Large\textbf{Thank You for Your Attention!}\vskip0.5em
-					\large\textbf{\insertauthor}\vskip0.5em
-					\scriptsize\insertlocation,~\insertdate\hfill\insertemail\vskip1em
-					\large\textit{Questions?}
-				\end{wide}%
+			\begin{frame}[t,noframenumbering]
+				\thispagestyle{navigation@titlepage}
+				\setbeamercolor{normal text}{fg=white}
+				\setbeamercolor{section in toc}{fg=white}
+				\setbeamercolor{subsection in toc}{fg=white}
+				\setbeamercolor{section number projected}{bg=white, fg=accent}
+				\frametitle{\textcolor{white}{About Me}}
+
+				\begin{columns}
+					\begin{column}{0.2\textwidth}
+						\hspace{-2cm}
+						\vspace{-2cm}
+						\centering
+						% Create a circular image
+						\begin{tikzpicture}
+							\clip (0,0) circle (2cm);
+							\node at (0,0) {\includegraphics[width=6.5cm]{\profilepic}};
+						\end{tikzpicture}
+					\end{column}
+					\begin{column}{0.8\textwidth}
+						\vspace{0.5cm}
+						\hspace{2cm}
+						\centering
+						\large
+						\begin{itemize}
+							\color{white}
+							\item[] Name: Jonas Heinle
+							\item[] Profession: AI, Rendering, Rust
+							\item[] Hobbies: Powerbuilding, Politik
+							\item[] Fun Fact: Lifting weights and programming are a perfect fit
+						\end{itemize}
+					\end{column}
+				\end{columns}
+				\vfill
+				\vspace{1.5cm}
+				\begin{columns}
+					\color{black}
+					\begin{column}{0.45\textwidth}
+						\vfill
+						\flushleft
+						\large
+						\faGlobe\ \href{https://jonasheinle.de}{jonasheinle.de}
+						\\
+						\faEnvelope\ \href{mailto:contact@jonasheinle.de}{contact@jonasheinle.de}
+						\\
+						\faYoutube\ \href{https://www.youtube.com/@jotrockenmitlocken}{youtube.com/@jotrockenmitlocken}
+					\end{column}
+					\begin{column}{0.45\textwidth}
+						\vfill
+						\flushleft
+						\large
+						\faGithub\ \href{https://github.com/Kataglyphis}{github.com/Kataglyphis}
+						\\
+						\faLinkedin\ \href{https://www.linkedin.com/in/jonas-heinle-0b2a301a0/}{linkedin.com/in/jonas-heinle-0b2a301a0/}
+						\\
+						\faInstagram\ \href{https://www.instagram.com/jotrockenmitlocken}{instagram.com/jotrockenmitlocken}
+					\end{column}
+					\begin{column}{0.1\textwidth}
+						\vfill
+					\end{column}
+				\end{columns}
 			\end{frame}}
 }
 
