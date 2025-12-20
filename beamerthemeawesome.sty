@@ -32,6 +32,7 @@
 \RequirePackage{etoolbox}
 \RequirePackage{tcolorbox}
 \tcbuselibrary{skins}
+\RequirePackage{fontawesome5}
 \RequirePackage[
 	tikz,
 	hyperref,
@@ -58,14 +59,14 @@
 }
 
 \newcommand{\mailicon}{%
-		ikz[baseline=-0.55ex]{
+											\csname tikz\endcsname[baseline=-0.55ex]{
 		\draw[white,line width=0.45pt,rounded corners=0.4pt] (0,0) rectangle (0.22,0.14);
 		\draw[white,line width=0.45pt] (0,0.14) -- (0.11,0.07) -- (0.22,0.14);
 	}
 }
 
 \newcommand{\webicon}{%
-		ikz[baseline=-0.55ex]{
+											\csname tikz\endcsname[baseline=-0.55ex]{
 		\draw[white,line width=0.45pt] (0.11,0.07) circle (0.07);
 		\draw[white,line width=0.45pt] (0.04,0.07) -- (0.18,0.07);
 		\draw[white,line width=0.45pt] (0.11,0.00) -- (0.11,0.14);
@@ -73,9 +74,24 @@
 }
 
 \newcommand{\sparkleicon}{%
-		ikz[baseline=-0.6ex]{
+											\csname tikz\endcsname[baseline=-0.6ex]{
 		\fill[white] (0,0.08) -- (0.03,0.03) -- (0.08,0) -- (0.03,-0.03) -- (0,-0.08) -- (-0.03,-0.03) -- (-0.08,0) -- (-0.03,0.03) -- cycle;
 	}
+}
+
+% GitHub icon using FontAwesome
+\newcommand{\githubicon}[1][accent]{%
+	{\textcolor{#1}{\faGithub}}%
+}
+
+% LinkedIn icon using FontAwesome
+\newcommand{\linkedinicon}[1][accent]{%
+	{\textcolor{#1}{\faLinkedin}}%
+}
+
+% Website/Globe icon using FontAwesome
+\newcommand{\websiteicon}[1][accent]{%
+	{\textcolor{#1}{\faGlobe}}%
 }
 
 
@@ -247,11 +263,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\newlength\awesome@sidebarwidth\setlength{\awesome@sidebarwidth}{0.15\paperwidth}
+\newlength\awesome@sidebarwidth\setlength{\awesome@sidebarwidth}{0.02\paperwidth}
 \newlength\awesome@textmargin\setlength{\awesome@textmargin}{0.05\paperwidth}
 \setbeamersize{description width=0.5cm}
 \setbeamersize{sidebar width left=\awesome@sidebarwidth}
-\setbeamersize{sidebar width right=\z@}
+\setbeamersize{sidebar width right=0.02\paperwidth} % z.B. 2%
 \setbeamersize{text margin left=\awesome@textmargin}
 \setbeamersize{text margin right=\awesome@textmargin}
 
@@ -352,6 +368,7 @@ segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@l
 \ensureinfocommand{email}
 \ensureinfocommand{uni}
 \ensureinfocommand{location}
+\ensureinfocommand{social}
 \def\inserttitle{\ifdefined\@title\@title\fi}
 \def\insertshorttitle{\ifdefined\@shorttitle\@shorttitle\fi}
 \def\insertauthor{\ifdefined\@author\@author\fi}
@@ -359,6 +376,56 @@ segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@l
 \def\insertemail{\ifdefined\@email\href{mailto:\@email}{\@email}\fi}
 \def\insertuni{\ifdefined\@uni\@uni\fi}
 \def\insertlocation{\ifdefined\@location\@location\fi}
+\def\insertsocial{\ifdefined\@social\@social\fi}
+
+\newcommand{\socialbadge}[1]{%
+											\csname tikz\endcsname[baseline=-0.6ex]{%
+		\node[draw=accent,rounded corners=0.4mm,inner xsep=0.6mm,inner ysep=0.2mm,text=accent,font=\scriptsize\sffamily] {#1};%
+	}%
+}
+
+\newcommand{\socialbadgeinverse}[1]{%
+											\csname tikz\endcsname[baseline=-0.6ex]{%
+		\node[draw=white,rounded corners=0.4mm,inner xsep=0.6mm,inner ysep=0.2mm,text=white,font=\scriptsize\sffamily] {#1};%
+	}%
+}
+
+% Helper to select icon based on type
+\newcommand{\selectsocialicon}[2]{%
+	\ifstrequal{#1}{GH}{%
+		\githubicon[#2]%
+	}{%
+		\ifstrequal{#1}{in}{%
+			\linkedinicon[#2]%
+		}{%
+			\ifstrequal{#1}{www}{%
+				\websiteicon[#2]%
+			}{%
+				\socialbadge{#1}%
+			}%
+		}%
+	}%
+}
+
+\newcommand{\selectsocialiconinverse}[2]{%
+	\ifstrequal{#1}{GH}{%
+		\githubicon[white]%
+	}{%
+		\ifstrequal{#1}{in}{%
+			\linkedinicon[white]%
+		}{%
+			\ifstrequal{#1}{www}{%
+				\websiteicon[white]%
+			}{%
+				\socialbadgeinverse{#1}%
+			}%
+		}%
+	}%
+}
+
+% Usage: \social{\socialitem{GH}{kataglyphis}{https://github.com/kataglyphis} \hspace{1em} ...}
+\newcommand{\socialitem}[3]{\selectsocialicon{#1}{accent}\hspace{0.4em}\href{#3}{#2}}
+\newcommand{\socialiteminverse}[3]{\selectsocialiconinverse{#1}{white}\hspace{0.4em}\href{#3}{#2}}
 
 \tikzfading[
 	name=title page picture fading,
@@ -387,7 +454,11 @@ segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@l
 		\usebeamerfont{author}\usebeamercolor[fg]{author}%
 		\insertauthor\\
 		\usebeamerfont{details}\usebeamercolor[fg]{details}%
-		\insertemail\\[2em]
+		\insertemail\par
+		\ifdefined\@social
+			\insertsocial\par
+		\fi
+		\vspace{2em}
 		\usebeamerfont{details}\usebeamercolor[fg]{details}%
 		\insertinstitute\\
 		\insertuni\\[2em]
@@ -540,9 +611,9 @@ segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@l
 				\column{0.38\linewidth}
 				\centering
 				\begin{tikzpicture}
-					\clip (0,0) circle (1.65cm);
-					\node at (0,0) {\includegraphics[width=3.3cm,height=3.3cm,keepaspectratio]{/md2pdfLib/presentation/images/579706fe.jpg}};
-					\draw[white,line width=1.2pt] (0,0) circle (1.65cm);
+					\clip (0,0) circle (2.10cm);
+					\node at (0,0) {\includegraphics[width=4.8cm,height=4.8cm,keepaspectratio]{/md2pdfLib/presentation/images/579706fe.jpg}};
+					\draw[white,line width=1.4pt] (0,0) circle (2.10cm);
 				\end{tikzpicture}
 				\column{0.62\linewidth}
 				{\Huge\textbf{Let's connect}}\\[-0.1em]
@@ -552,7 +623,16 @@ segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@l
 				{\scriptsize\insertinstitute\\\insertuni}\\[0.35em]
 				{\scriptsize\insertlocation~\insertdate}\\[0.35em]
 				{\scriptsize\insertemail}\\[0.25em]
-				{\Large\href{https://jonasheinle.de}{\underline{jonasheinle.de}}}%
+				{\Large\href{https://jonasheinle.de}{\underline{jonasheinle.de}}}\\[0.45em]
+				\ifdefined\@social
+					{\small%
+					\begingroup
+					\let\socialbadge\socialbadgeinverse%
+					\let\socialitem\socialiteminverse%
+					\insertsocial
+					\endgroup
+					}\par
+				\fi
 			\end{columns}
 		\end{wide}%
 	\end{frame}}
