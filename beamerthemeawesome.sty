@@ -607,31 +607,91 @@ segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@l
 	\begin{frame}[c,noframenumbering]\thispagestyle{navigation@titlepage}%
 		\begin{wide}\color{white}%
 			\hypersetup{urlcolor=white,linkcolor=white,citecolor=white}
+			% Epic background decorative layer
+			\begin{tikzpicture}[remember picture,overlay]
+				% Animated background circles
+				\fill[white,opacity=0.04] (current page.north west) circle (4cm);
+				\fill[white,opacity=0.05] (current page.south east) circle (5cm);
+				\fill[white,opacity=0.035] ([xshift=-3cm,yshift=2cm]current page.south) circle (3cm);
+				\fill[white,opacity=0.025] ([xshift=2cm,yshift=-2cm]current page.north) circle (2.5cm);
+				% Diagonal accent lines for dynamic feel
+				\draw[white,opacity=0.12,line width=1.2pt] ([xshift=1.5cm]current page.north west) -- ([xshift=-4cm,yshift=4cm]current page.south);
+				\draw[white,opacity=0.10,line width=0.9pt] ([xshift=3cm]current page.north west) -- ([xshift=-1.5cm,yshift=2.5cm]current page.south);
+				\draw[white,opacity=0.08,line width=0.6pt] ([xshift=0.5cm]current page.north west) -- ([xshift=-5cm,yshift=5cm]current page.south);
+			\end{tikzpicture}
 			\begin{columns}[c,totalwidth=\linewidth]
 				\column{0.38\linewidth}
 				\centering
+				% Epic image styling with multiple glow layers
 				\begin{tikzpicture}
+					% Outer glow layers for dramatic effect
+					\fill[white,opacity=0.10] (0,0) circle (2.55cm);
+					\fill[white,opacity=0.15] (0,0) circle (2.40cm);
+					\fill[white,opacity=0.08] (0,0) circle (2.70cm);
+					% Decorative double ring
+					\draw[white,line width=2.5pt,opacity=0.30] (0,0) circle (2.30cm);
+					\draw[white,line width=1.2pt,opacity=0.40] (0,0) circle (2.20cm);
+					% Main image with clip
 					\clip (0,0) circle (2.10cm);
 					\node at (0,0) {\includegraphics[width=4.8cm,height=4.8cm,keepaspectratio]{/md2pdfLib/presentation/images/579706fe.jpg}};
-					\draw[white,line width=1.4pt] (0,0) circle (2.10cm);
+					\draw[white,line width=2pt] (0,0) circle (2.10cm);
+				\end{tikzpicture}
+				% Decorative sparkles radiating from image
+				\begin{tikzpicture}[remember picture, overlay, shift={(current page.center)}]
+					\foreach \angle in {0,45,90,135,180,225,270,315} {
+						\fill[white,opacity=0.85] (\angle:2.8cm) 
+							-- ++({45+\angle}:0.12) -- ++(\angle:0.22) -- ++({-45+\angle}:0.12) 
+							-- ++({180+\angle}:0.12) -- ++({225+\angle}:0.22) -- ++({180+\angle}:0.12) -- cycle;
+					}
 				\end{tikzpicture}
 				\column{0.62\linewidth}
-				{\Huge\textbf{Let's connect}}\\[-0.1em]
-				\rule{0.62\linewidth}{1.2pt}\\[0.55em]
-				{\LARGE\textbf{\insertauthor}}\\[0.25em]
-				{\small\textsc{Build \textbullet\ Share \textbullet\ Rust \textbullet\ LaTeX}}\\[0.8em]
-				{\scriptsize\insertinstitute\\\insertuni}\\[0.35em]
-				{\scriptsize\insertlocation~\insertdate}\\[0.35em]
-				{\scriptsize\insertemail}\\[0.25em]
-				{\Large\href{https://jonasheinle.de}{\underline{jonasheinle.de}}}\\[0.45em]
-				\ifdefined\@social
+				% Epic title with enhanced styling
+				\begin{tikzpicture}[baseline=(title.base)]
+					\node[inner sep=0] (title) {{\Huge\textbf{Let's connect}}};
+					% Triple underline for dramatic effect
+					\draw[white,line width=0.8pt,opacity=0.5] ([xshift=-0.4cm]title.south west) -- ([xshift=0.4cm]title.south east);
+					\draw[white,line width=0.5pt,opacity=0.35] ([xshift=-0.35cm,yshift=-0.08cm]title.south west) -- ([xshift=0.35cm,yshift=-0.08cm]title.south east);
+					\draw[white,line width=0.3pt,opacity=0.25] ([xshift=-0.3cm,yshift=-0.14cm]title.south west) -- ([xshift=0.3cm,yshift=-0.14cm]title.south east);
+				\end{tikzpicture}\\[0.35em]
+				% Gradient divider line
+				\begin{tikzpicture}
+					\shade[left color=white,middle color=white,right color=white!20] (0,0) rectangle (0.62\linewidth,0.04cm);
+				\end{tikzpicture}\\[0.65em]
+				% Name with epic styling
+				{{\LARGE\textbf{\insertauthor}}}\\[0.4em]
+				% Tagline with sparkle accents
+				{\small\textsc{%
+					\sparkleicon\ \textbf{Build}\ $\bullet$\ \textbf{Share}\ $\bullet$\ \textbf{Rust}\ $\bullet$\ \textbf{LaTeX}\ \sparkleicon%
+				}}\\[1.0em]
+				% Info section with styled box
+				\begin{tikzpicture}
+					\node[inner sep=5pt,rounded corners=4pt,fill=black,fill opacity=0.28,draw=white,line width=0.6pt,draw opacity=0.45] (info) {%
+						\begin{minipage}{0.56\linewidth}
+							\centering
+							{\scriptsize\bfseries\insertinstitute}\\[0.05em]
+							{\tiny\insertuni}\\[0.2em]
+							{\scriptsize\insertlocation\ \textbullet\ \insertdate}\\[0.15em]
+							{\scriptsize\mailicon\ \insertemail}
+						\end{minipage}
+					};
+				\end{tikzpicture}\\[0.45em]
+				% Website link with epic styling
+				\begin{tikzpicture}[baseline=(web.base)]
+					\node[inner sep=4pt,rounded corners=3pt,draw=white,line width=1.2pt,fill=black,fill opacity=0.32,draw opacity=0.50] (web) {%
+						{\Large\webicon\ \href{https://jonasheinle.de}{\textbf{jonasheinle.de}}}%
+					};
+					% Glow effect behind web link
+					\draw[white,line width=2pt,opacity=0.15,rounded corners=3pt] ([xshift=-1pt,yshift=-1pt]web.south west) rectangle ([xshift=1pt,yshift=1pt]web.north east);
+				\end{tikzpicture}\\[0.65em]
+				% Social links section with enhanced styling
+				\ifdefined\@social%
 					{\small%
 					\begingroup
 					\let\socialbadge\socialbadgeinverse%
 					\let\socialitem\socialiteminverse%
-					\insertsocial
+					\insertsocial%
 					\endgroup
-					}\par
+					}%
 				\fi
 			\end{columns}
 		\end{wide}%
