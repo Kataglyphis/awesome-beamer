@@ -8,9 +8,8 @@
 \RequirePackage{kvoptions}
 \SetupKeyvalOptions{family=awesome,prefix=awesome@}
 
-\newif\ifawesome@english@
-\DeclareVoidOption{english}{\awesome@english@true}
-\DeclareVoidOption{german}{\awesome@english@false}
+\DeclareBoolOption{english}
+\DeclareComplementaryOption{german}{english}
 
 \DeclareBoolOption{notoc}
 \DeclareBoolOption{secslide}
@@ -21,7 +20,7 @@
 
 \ProcessKeyvalOptions*
 
-\ifawesome@english@\RequirePackage[english]{babel}\else\RequirePackage[ngerman]{babel}\fi
+\ifawesome@english\RequirePackage[english]{babel}\else\RequirePackage[ngerman]{babel}\fi
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -44,7 +43,7 @@
 
 \usetikzlibrary{overlay-beamer-styles,decorations.markings}
 \tikzset{
-	node distance = 5mm,
+	node distance=5mm,
 	invisible/.style={opacity=0},
 	muted/.style={opacity=0.3},
 	visible on/.style={alt={#1{}{invisible}}},
@@ -83,8 +82,6 @@
 		\fi%
 	\fi%
 }
-
-\BeforeBeginEnvironment{tabular}{\def\arraystretch{1.1}}
 
 \providebool{wideframe}
 \define@key{beamerframe}{wide}[true]{
@@ -180,7 +177,9 @@
 
 \setbeamercolor{alerted text}{fg=accent}
 
+\setbeamercolor{title}{fg=black}
 \setbeamercolor{subtitle}{fg=darkgray}
+
 \setbeamercolor{frametitle}{fg=black}
 \setbeamercolor{framesubtitle}{fg=darkgray}
 
@@ -204,59 +203,24 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\setbeamerfont{title}{
-	size=\LARGE,
-	shape=\bfseries\scshape
-}
+\setbeamerfont{title}{size=\LARGE,shape=\bfseries\scshape}
+\setbeamerfont{subtitle}{size=\large,shape=\normalfont}
 
-\setbeamerfont{subtitle}{
-	size=\large,
-	shape=\normalfont
-}
+\setbeamerfont{author}{size=\normalsize,shape=\normalfont}
+\setbeamerfont{details}{size=\footnotesize,shape=\normalfont}
 
-\setbeamerfont{author}{
-	size=\normalsize,
-	shape=\normalfont
-}
+\setbeamerfont{footline}{size=\tiny,shape=\normalfont}
 
-\setbeamerfont{details}{
-	size=\footnotesize,
-	shape=\normalfont
-}
+\setbeamerfont{footnote}{size=\tiny,shape=\normalfont}
 
-\setbeamerfont{footline}{
-	size=\tiny,
-	shape=\normalfont
-}
+\setbeamerfont{frametitle}{size=\LARGE,shape=\bfseries\scshape}
 
-\setbeamerfont{footnote}{
-	size=\tiny,
-	shape=\normalfont
-}
+\setbeamerfont{framesubtitle}{size=\normalsize,shape=\normalfont}
 
-\setbeamerfont{frametitle}{
-	size=\LARGE,
-	shape=\bfseries\scshape
-}
+\setbeamerfont{block title}{size=\normalfont,shape=\strut}
+\setbeamerfont{blockdef}{size=\large,shape=\bfseries}
 
-\setbeamerfont{framesubtitle}{
-	size=\normalsize,
-	shape=\normalfont
-}
-
-\setbeamerfont{block title}{
-	size=\normalfont,
-	shape=\strut
-}
-
-\setbeamerfont{blockdef}{
-	size=\large,
-	shape=\bfseries
-}
-
-\setbeamerfont{description item}{
-	shape=\bfseries
-}
+\setbeamerfont{description item}{shape=\bfseries}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -324,71 +288,6 @@
 		\begin{beamercolorbox}{framesubtitle}%
 			\ifawesome@nonumbersinframetitle\ifbool{wideframe}{\hspace{-\awesome@sidebarwidth}}{}\fi\usebeamerfont{subtitle}\insertframesubtitle%
 		\end{beamercolorbox}\fi%
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newtcolorbox{beamerbox}[3][]{boxrule=\smile@linewidth,
-	IfBlankTF={#3}{toprule=2mm}{title=#3},colback=#2!5!white,colframe=#2!75!black,left=0em,
-	lefttitle=4mm, arc=\smile@rounding, enhanced, segmentation engine=path,
-	segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@linewidth},#1}
-
-\renewenvironment{definition}[1][\empty]{%
-	\begin{beamerbox}{gray}{#1}%
-		}{\end{beamerbox}}
-
-\renewenvironment{block}[1][]{%
-	\begin{beamerbox}{accent}{#1}%
-		}{\end{beamerbox}}
-
-\renewenvironment{examples}[1][]{%
-	\begin{beamerbox}{green}{#1}%
-		}{\end{beamerbox}}
-
-\renewenvironment{alertblock}[1][]{%
-	\begin{beamerbox}{red}{#1}%
-		}{\end{beamerbox}}
-
-\newenvironment<>{modal}[1][]{%
-	\def\titlename{#1}%
-	\visibleenv#2%
-	\begin{tikzpicture}[o,node distance=0pt]%
-		\fill[modal background] (current page.south west) rectangle (current page.north east);%
-		\node[modal box] at (current page) (MODALCONTENT) \bgroup%
-		}{%
-		\egroup;%
-		\if\expandafter\isempty\expandafter{\titlename}\else\node[modal title] at (MODALCONTENT.north) {\titlename};\fi
-	\end{tikzpicture}%
-	\endvisibleenv%
-}
-
-\ensureinfocommand{title}
-\ensureinfocommand{author}
-\ensureinfocommand{background}
-\ensureinfocommand{email}
-\ensureinfocommand{uni}
-\ensureinfocommand{location}
-\def\inserttitle{\ifdefined\@title\@title\fi}
-\def\insertshorttitle{\ifdefined\@shorttitle\@shorttitle\fi}
-\def\insertauthor{\ifdefined\@author\@author\fi}
-\def\insertshortauthor{\ifdefined\@shortauthor\@shortauthor\fi}
-\def\insertemail{\ifdefined\@email\href{mailto:\@email}{\@email}\fi}
-\def\insertuni{\ifdefined\@uni\@uni\fi}
-\def\insertlocation{\ifdefined\@location\@location\fi}
-
-\tikzfading[
-	name=title page picture fading,
-	left color=transparent!0,
-	right color=transparent!100,
-]
-
-\def\ps@navigation@titlepage{\setbeamertemplate{footline}{}\@nameuse{ps@navigation}}
-
-\newlength\lhswidth\setlength{\lhswidth}{.55\textwidth}
-\newlength\titlewidth
-\newlength\subtitlewidth
-\newlength\maxwidth
-\setbeamertemplate{title page}{\begin{wide}
 		\def\titlecontent{\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle}%
 		\def\subtitlecontent{\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle}%
 		\settowidth\titlewidth\titlecontent%
@@ -418,24 +317,18 @@
 				-- ++(-3, -\paperheight)
 				-- cycle;
 
-				\node[
-					anchor=south east,
-					inner sep=0,
-					outer sep=0
-				] at (current page.south east) {
-					\includegraphics[height=\paperheight]{\@background}
-				};
+			\node[anchor=south east,inner sep=0,outer sep=0] at (current page.south east) {
+				\includegraphics[height=\paperheight]{\@background}
+			};
 
-				\fill[
-					black, path fading=title page picture fading,
-					fading angle=-15
-				]
-				(current page.south east)
-				rectangle
-				++(-10, \dimexpr\paperheight+1cm);
-			\end{tikzpicture}
-		\fi
-	\end{wide}}
+			\fill[black,path fading=title page picture fading,fading angle=-15]
+				(current page.south east) rectangle ++(-10, \dimexpr\paperheight+1cm);
+		\end{tikzpicture}
+		\tikz[o]\draw[black,lcr,line width=2*\smile@linewidth]
+			([shift={(-5.1,0)}]current page.north east)
+			-- ++(-3,-\paperheight);
+	\fi
+\end{wide}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -492,7 +385,7 @@
 					}%
 			\fi%
 		\fi%
-	}{\ifawesome@english@ Page\else Seite\fi~\insertframenumber~/~\inserttotalframenumber}%
+	}{\ifawesome@english Page\else Seite\fi~\insertframenumber~/~\inserttotalframenumber}%
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -506,7 +399,7 @@
 	\setbeamertemplate{footline}{%
 		\setfooter{\insertshortauthor}%
 		{\hyperlinkdocumentstart{\insertshorttitle}}%
-		{\ifawesome@english@ Section\else Kapitel\fi~\thesection\ifx\insertsubsection\empty\else.\thesubsection\fi}%
+		{\ifawesome@english Section\else Kapitel\fi~\thesection\ifx\insertsubsection\empty\else.\thesubsection\fi}%
 	}%
 	\@nameuse{ps@navigation}%
 }
