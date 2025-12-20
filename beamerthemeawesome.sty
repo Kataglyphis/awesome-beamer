@@ -79,6 +79,28 @@
 	}
 }
 
+\newcommand{\anticon}{%
+											\csname tikz\endcsname[baseline=-0.55ex]{
+		% Ant head
+		\fill[white] (0.05,0.10) circle (0.025);
+		% Ant thorax
+		\fill[white] (0.05,0.05) circle (0.03);
+		% Ant abdomen
+		\fill[white] (0.05,-0.02) circle (0.035);
+		% Ant legs left
+		\draw[white,line width=0.4pt] (0.02,0.05) -- (-0.02,0.00);
+		\draw[white,line width=0.4pt] (0.02,0.05) -- (-0.02,0.05);
+		\draw[white,line width=0.4pt] (0.02,0.00) -- (-0.02,0.08);
+		% Ant legs right
+		\draw[white,line width=0.4pt] (0.08,0.05) -- (0.12,0.00);
+		\draw[white,line width=0.4pt] (0.08,0.05) -- (0.12,0.05);
+		\draw[white,line width=0.4pt] (0.08,0.00) -- (0.12,0.08);
+		% Ant antennae
+		\draw[white,line width=0.3pt] (0.06,0.12) -- (0.08,0.15);
+		\draw[white,line width=0.3pt] (0.04,0.12) -- (0.02,0.15);
+	}
+}
+
 % GitHub icon using FontAwesome
 \newcommand{\githubicon}[1][accent]{%
 	{\textcolor{#1}{\faGithub}}%
@@ -607,61 +629,83 @@ segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@l
 	\begin{frame}[c,noframenumbering]\thispagestyle{navigation@titlepage}%
 		\begin{wide}\color{white}%
 			\hypersetup{urlcolor=white,linkcolor=white,citecolor=white}
-			% Epic background decorative layer
+			% Epic desert landscape with sand dunes
 			\begin{tikzpicture}[remember picture,overlay]
-				% Animated background circles
-				\fill[white,opacity=0.04] (current page.north west) circle (4cm);
-				\fill[white,opacity=0.05] (current page.south east) circle (5cm);
-				\fill[white,opacity=0.035] ([xshift=-3cm,yshift=2cm]current page.south) circle (3cm);
-				\fill[white,opacity=0.025] ([xshift=2cm,yshift=-2cm]current page.north) circle (2.5cm);
-				% Diagonal accent lines for dynamic feel
-				\draw[white,opacity=0.12,line width=1.2pt] ([xshift=1.5cm]current page.north west) -- ([xshift=-4cm,yshift=4cm]current page.south);
-				\draw[white,opacity=0.10,line width=0.9pt] ([xshift=3cm]current page.north west) -- ([xshift=-1.5cm,yshift=2.5cm]current page.south);
-				\draw[white,opacity=0.08,line width=0.6pt] ([xshift=0.5cm]current page.north west) -- ([xshift=-5cm,yshift=5cm]current page.south);
+				% Sand dune layers - wavy pattern
+				\fill[white,opacity=0.06] (current page.south west) -- ([yshift=1.5cm]current page.south west) 
+					.. controls ([yshift=2cm,xshift=3cm]current page.south west) .. ([yshift=2.5cm,xshift=6cm]current page.south west)
+					.. controls ([yshift=3cm,xshift=9cm]current page.south west) .. ([yshift=2cm,xshift=12cm]current page.south west)
+					.. controls ([yshift=1cm,xshift=15cm]current page.south west) .. (current page.south east)
+					-- ([yshift=0cm]current page.south east) -- cycle;
+				\fill[white,opacity=0.04] (current page.south west) -- ([yshift=3cm]current page.south west)
+					.. controls ([yshift=4cm,xshift=4cm]current page.south west) .. ([yshift=4.5cm,xshift=8cm]current page.south west)
+					.. controls ([yshift=5cm,xshift=12cm]current page.south west) .. ([yshift=3.5cm,xshift=16cm]current page.south west)
+					.. controls ([yshift=2.5cm,xshift=20cm]current page.south west) .. (current page.south east)
+					-- ([yshift=2cm]current page.south east) -- cycle;
+				% Desert heat shimmer lines
+				\draw[white,opacity=0.10,line width=0.8pt] ([yshift=2cm]current page.south west) 
+					.. controls ([yshift=2.3cm,xshift=3cm]current page.south west) .. ([yshift=1.8cm,xshift=6cm]current page.south west);
+				\draw[white,opacity=0.08,line width=0.6pt] ([yshift=4.5cm]current page.south west)
+					.. controls ([yshift=4.8cm,xshift=3cm]current page.south west) .. ([yshift=4.2cm,xshift=6cm]current page.south west);
+				% Ant trails scattered across desert
+				\foreach \x in {1,3,5,7,9,11,13,15} {
+					\draw[white,opacity=0.12,line width=0.3pt] ([xshift=\x cm,yshift=1cm]current page.south west) -- ([xshift=\x cm,yshift=0.3cm]current page.south west);
+				}
+				% Distant dunes (very faint)
+				\fill[white,opacity=0.02] (current page.north west) 
+					.. controls ([yshift=-1cm,xshift=4cm]current page.north west) .. ([yshift=-2cm,xshift=8cm]current page.north west)
+					.. controls ([yshift=-3cm,xshift=12cm]current page.north west) .. (current page.north east)
+					-- ([yshift=0cm]current page.north east) -- cycle;
 			\end{tikzpicture}
 			\begin{columns}[c,totalwidth=\linewidth]
 				\column{0.38\linewidth}
 				\centering
-				% Epic image styling with multiple glow layers
+				% Epic image styling with sand glow (desert heat effect)
 				\begin{tikzpicture}
-					% Outer glow layers for dramatic effect
-					\fill[white,opacity=0.10] (0,0) circle (2.55cm);
-					\fill[white,opacity=0.15] (0,0) circle (2.40cm);
-					\fill[white,opacity=0.08] (0,0) circle (2.70cm);
-					% Decorative double ring
-					\draw[white,line width=2.5pt,opacity=0.30] (0,0) circle (2.30cm);
-					\draw[white,line width=1.2pt,opacity=0.40] (0,0) circle (2.20cm);
+					% Sand glow layers (warm desert effect)
+					\fill[white,opacity=0.12] (0,0) circle (2.55cm);
+					\fill[white,opacity=0.18] (0,0) circle (2.40cm);
+					\fill[white,opacity=0.10] (0,0) circle (2.70cm);
+					% Desert sand rings
+					\draw[white,line width=2.5pt,opacity=0.35] (0,0) circle (2.30cm);
+					\draw[white,line width=1.2pt,opacity=0.45] (0,0) circle (2.20cm);
 					% Main image with clip
 					\clip (0,0) circle (2.10cm);
 					\node at (0,0) {\includegraphics[width=4.8cm,height=4.8cm,keepaspectratio]{/md2pdfLib/presentation/images/579706fe.jpg}};
 					\draw[white,line width=2pt] (0,0) circle (2.10cm);
 				\end{tikzpicture}
-				% Decorative sparkles radiating from image
+				% Marching ant army - single ring to the left
 				\begin{tikzpicture}[remember picture, overlay, shift={(current page.center)}]
-					\foreach \angle in {0,45,90,135,180,225,270,315} {
-						\fill[white,opacity=0.85] (\angle:2.8cm) 
-							-- ++({45+\angle}:0.12) -- ++(\angle:0.22) -- ++({-45+\angle}:0.12) 
-							-- ++({180+\angle}:0.12) -- ++({225+\angle}:0.22) -- ++({180+\angle}:0.12) -- cycle;
-					}
+					\begin{scope}[shift={(-1.2cm,0)}]
+						\foreach \angle in {0,30,60,90,120,150,180,210,240,270,300,330} {
+							\fill[white,opacity=0.80] (\angle:2.8cm) circle (0.08cm);
+							\fill[white,opacity=0.75] ({{\angle}}:2.92cm) circle (0.10cm);
+							\fill[white,opacity=0.70] ({{\angle}}:3.05cm) circle (0.09cm);
+							\draw[white,opacity=0.75,line width=0.5pt] (\angle:2.90cm) -- ({{\angle+25}}:3.00cm);
+							\draw[white,opacity=0.75,line width=0.5pt] (\angle:2.90cm) -- ({{\angle-25}}:3.00cm);
+							\draw[white,opacity=0.70,line width=0.4pt] (\angle:2.95cm) -- ({{\angle+15}}:3.10cm);
+							\draw[white,opacity=0.70,line width=0.4pt] (\angle:2.95cm) -- ({{\angle-15}}:3.10cm);
+						}
+					\end{scope}
 				\end{tikzpicture}
 				\column{0.62\linewidth}
-				% Epic title with enhanced styling
+				% Epic title with desert styling
 				\begin{tikzpicture}[baseline=(title.base)]
-					\node[inner sep=0] (title) {{\Huge\textbf{Let's connect}}};
-					% Triple underline for dramatic effect
-					\draw[white,line width=0.8pt,opacity=0.5] ([xshift=-0.4cm]title.south west) -- ([xshift=0.4cm]title.south east);
-					\draw[white,line width=0.5pt,opacity=0.35] ([xshift=-0.35cm,yshift=-0.08cm]title.south west) -- ([xshift=0.35cm,yshift=-0.08cm]title.south east);
-					\draw[white,line width=0.3pt,opacity=0.25] ([xshift=-0.3cm,yshift=-0.14cm]title.south west) -- ([xshift=0.3cm,yshift=-0.14cm]title.south east);
+					\node[inner sep=0] (title) {{\Huge\textbf{The Desert Explorer}}};
+					% Sand-textured underlines
+					\draw[white,line width=0.8pt,opacity=0.6] ([xshift=-0.4cm]title.south west) -- ([xshift=0.4cm]title.south east);
+					\draw[white,line width=0.5pt,opacity=0.45] ([xshift=-0.35cm,yshift=-0.08cm]title.south west) -- ([xshift=0.35cm,yshift=-0.08cm]title.south east);
+					\draw[white,line width=0.3pt,opacity=0.30] ([xshift=-0.3cm,yshift=-0.14cm]title.south west) -- ([xshift=0.3cm,yshift=-0.14cm]title.south east);
 				\end{tikzpicture}\\[0.35em]
-				% Gradient divider line
+				% Desert horizon divider
 				\begin{tikzpicture}
 					\shade[left color=white,middle color=white,right color=white!20] (0,0) rectangle (0.62\linewidth,0.04cm);
 				\end{tikzpicture}\\[0.65em]
-				% Name with epic styling
+				% Name with desert styling
 				{{\LARGE\textbf{\insertauthor}}}\\[0.4em]
-				% Tagline with sparkle accents
+				% Tagline with ant-themed accents
 				{\small\textsc{%
-					\sparkleicon\ \textbf{Build}\ $\bullet$\ \textbf{Share}\ $\bullet$\ \textbf{Rust}\ $\bullet$\ \textbf{LaTeX}\ \sparkleicon%
+					\anticon\ \textbf{Navigate}\ $\bullet$\ \textbf{Optimize}\ $\bullet$\ \textbf{Collaborate}\ $\bullet$\ \textbf{Innovate}\ \anticon%
 				}}\\[1.0em]
 				% Info section with styled box
 				\begin{tikzpicture}
