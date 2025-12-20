@@ -1,4 +1,4 @@
-\ProvidesPackage{awesome-beamer-theme}[]
+\ProvidesPackage{beamerthemeawesome}[]
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -31,7 +31,6 @@
 \RequirePackage{microtype}
 \RequirePackage{etoolbox}
 \RequirePackage{tcolorbox}
-\usepackage{fontawesome5}
 \tcbuselibrary{skins}
 \RequirePackage[
 	tikz,
@@ -51,11 +50,32 @@
 	muted on/.style={alt={#1{muted}{}}},
 	unmuted on/.style={alt={#1{}{muted}}},
 	alt/.code args={<#1>#2#3}{%
-			\alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}}
-		},
+		\alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}}
+	},
 	modal background/.style={fill=gray,opacity=0.8},
 	modal box/.style={draw=black,rnd,fill=white,lw,shadow,inner sep=3mm,text width=0.66\paperwidth},
 	modal title/.style={roundednode,fill=black,text=white}
+}
+
+\newcommand{\mailicon}{%
+		ikz[baseline=-0.55ex]{
+		\draw[white,line width=0.45pt,rounded corners=0.4pt] (0,0) rectangle (0.22,0.14);
+		\draw[white,line width=0.45pt] (0,0.14) -- (0.11,0.07) -- (0.22,0.14);
+	}
+}
+
+\newcommand{\webicon}{%
+		ikz[baseline=-0.55ex]{
+		\draw[white,line width=0.45pt] (0.11,0.07) circle (0.07);
+		\draw[white,line width=0.45pt] (0.04,0.07) -- (0.18,0.07);
+		\draw[white,line width=0.45pt] (0.11,0.00) -- (0.11,0.14);
+	}
+}
+
+\newcommand{\sparkleicon}{%
+		ikz[baseline=-0.6ex]{
+		\fill[white] (0,0.08) -- (0.03,0.03) -- (0.08,0) -- (0.03,-0.03) -- (0,-0.08) -- (-0.03,-0.03) -- (-0.08,0) -- (-0.03,0.03) -- cycle;
+	}
 }
 
 
@@ -130,11 +150,11 @@
 
 \newcounter{secinc}
 \pretocmd\section{%
-  % At this point, the section command has not yet incremented the section counter, so we need to do this by ourselves
-  \setcounter{secinc}{\thesection + 1}%
-  \refreshcountsinaux%
-  \immediate\write\@auxout{\global\noexpand\@namedef{s@frameatsecstart-\arabic{secinc}}{\insertframenumber}}%
- }{}{}
+	% At this point, the section command has not yet incremented the section counter, so we need to do this by ourselves
+	\setcounter{secinc}{\thesection + 1}%
+	\refreshcountsinaux%
+	\immediate\write\@auxout{\global\noexpand\@namedef{s@frameatsecstart-\arabic{secinc}}{\insertframenumber}}%
+}{}{}
 
 \newcounter{subsecinc}
 \pretocmd\subsection{%
@@ -284,34 +304,99 @@
 	\begin{beamercolorbox}{frametitle}%
 		\insertframetitle%
 	\end{beamercolorbox}
-	\ifx\insertframesubtitle\empty\else%
-		\begin{beamercolorbox}{framesubtitle}%
-			\ifawesome@nonumbersinframetitle\ifbool{wideframe}{\hspace{-\awesome@sidebarwidth}}{}\fi\usebeamerfont{subtitle}\insertframesubtitle%
-		\end{beamercolorbox}\fi%
-		\def\titlecontent{\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle}%
-		\def\subtitlecontent{\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle}%
-		\settowidth\titlewidth\titlecontent%
-		\settowidth\subtitlewidth\subtitlecontent%
-		\setlength\maxwidth{\ifdim\titlewidth>\subtitlewidth\titlewidth\else\subtitlewidth\fi}%
-		\thispagestyle{navigation@titlepage}%
-		\begin{minipage}{\lhswidth}
-			\raggedright%
-			\titlecontent\\
-			\subtitlecontent\\
-			\textcolor{accent}{\rule{\ifdim\maxwidth<\lhswidth\maxwidth\else\lhswidth\fi}{\smile@linewidth}}\\[2em]
-			\usebeamerfont{author}\usebeamercolor[fg]{author}%
-			\insertauthor\\
-			\usebeamerfont{details}\usebeamercolor[fg]{details}%
-			\insertemail\\[2em]
-			\usebeamerfont{details}\usebeamercolor[fg]{details}%
-			\insertinstitute\\
-			\insertuni\\[2em]
-			\insertdate
-		\end{minipage}
+	\ifx\usebeamercolor{subtitle}\insertframesubtitle\empty\else%
+	\begin{beamercolorbox}{framesubtitle}%
+		\ifawesome@nonumbersinframetitle\ifbool{wideframe}{\hspace{-\awesome@sidebarwidth}}{}\fi\usebeamerfont{subtitle}\insertframesubtitle%
+	\end{beamercolorbox}\fi%
+}
 
-		\ifdefined\@background
-			\begin{tikzpicture}[remember picture, overlay]
-				\clip (current page.south east)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newtcolorbox{beamerbox}[3][]{boxrule=\smile@linewidth,
+IfBlankTF={#3}{toprule=2mm}{title=#3},colback=#2!5!white,colframe=#2!75!black,left=0em,
+lefttitle=4mm, arc=\smile@rounding, enhanced, segmentation engine=path,
+segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@linewidth},#1}
+
+\renewenvironment{definition}[1][\empty]{%
+	\begin{beamerbox}{gray}{#1}%
+}{\end{beamerbox}}
+
+\renewenvironment{block}[1][]{%
+	\begin{beamerbox}{accent}{#1}%
+}{\end{beamerbox}}
+
+\renewenvironment{examples}[1][]{%
+	\begin{beamerbox}{green}{#1}%
+}{\end{beamerbox}}
+
+\renewenvironment{alertblock}[1][]{%
+	\begin{beamerbox}{red}{#1}%
+}{\end{beamerbox}}
+
+\newenvironment<>{modal}[1][]{%
+	\def\titlename{#1}%
+	\visibleenv#2%
+	\begin{tikzpicture}[o,node distance=0pt]%
+		\fill[modal background] (current page.south west) rectangle (current page.north east);%
+		\node[modal box] at (current page) (MODALCONTENT) \bgroup%
+}{%
+		\egroup;%
+		\if\expandafter\isempty\expandafter{\titlename}\else\node[modal title] at (MODALCONTENT.north) {\titlename};\fi
+	\end{tikzpicture}%
+	\endvisibleenv%
+}
+
+\ensureinfocommand{title}
+\ensureinfocommand{author}
+\ensureinfocommand{background}
+\ensureinfocommand{email}
+\ensureinfocommand{uni}
+\ensureinfocommand{location}
+\def\inserttitle{\ifdefined\@title\@title\fi}
+\def\insertshorttitle{\ifdefined\@shorttitle\@shorttitle\fi}
+\def\insertauthor{\ifdefined\@author\@author\fi}
+\def\insertshortauthor{\ifdefined\@shortauthor\@shortauthor\fi}
+\def\insertemail{\ifdefined\@email\href{mailto:\@email}{\@email}\fi}
+\def\insertuni{\ifdefined\@uni\@uni\fi}
+\def\insertlocation{\ifdefined\@location\@location\fi}
+
+\tikzfading[
+	name=title page picture fading,
+	left color=transparent!0,
+	right color=transparent!100,
+]
+
+\def\ps@navigation@titlepage{\setbeamertemplate{footline}{}\@nameuse{ps@navigation}}
+
+\newlength\lhswidth\setlength{\lhswidth}{.55\textwidth}
+\newlength\titlewidth
+\newlength\subtitlewidth
+\newlength\maxwidth
+\setbeamertemplate{title page}{\begin{wide}
+	\def\titlecontent{\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle}%
+	\def\subtitlecontent{\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle}%
+	\settowidth\titlewidth\titlecontent%
+	\settowidth\subtitlewidth\subtitlecontent%
+	\setlength\maxwidth{\ifdim\titlewidth>\subtitlewidth\titlewidth\else\subtitlewidth\fi}%
+	\thispagestyle{navigation@titlepage}%
+	\begin{minipage}{\lhswidth}
+		\raggedright%
+		\titlecontent\\
+		\subtitlecontent\\
+		\textcolor{accent}{\rule{\ifdim\maxwidth<\lhswidth\maxwidth\else\lhswidth\fi}{\smile@linewidth}}\\[2em]
+		\usebeamerfont{author}\usebeamercolor[fg]{author}%
+		\insertauthor\\
+		\usebeamerfont{details}\usebeamercolor[fg]{details}%
+		\insertemail\\[2em]
+		\usebeamerfont{details}\usebeamercolor[fg]{details}%
+		\insertinstitute\\
+		\insertuni\\[2em]
+		\insertdate
+	\end{minipage}
+
+	\ifdefined\@background
+		\begin{tikzpicture}[o]
+			\clip (current page.south east)
 				-- (current page.north east)
 				-- ++(-5.1, 0)
 				-- ++(-3, -\paperheight)
@@ -334,22 +419,22 @@
 
 \newlength\maxfooterwd\maxfooterwd=0pt
 \def\updatemaxfooterwd#1{\ifdim#1>\maxfooterwd%
-		\global\maxfooterwd=#1%
-		\immediate\write\@auxout{\global\maxfooterwd=\the#1}%
-	\fi}
+	\global\maxfooterwd=#1%
+	\immediate\write\@auxout{\global\maxfooterwd=\the#1}%
+\fi}
 % Make sure we always put the current max footer width into the aux file
 \AtEndDocument{\immediate\write\@auxout{\global\maxfooterwd=\the\maxfooterwd}}
 \newsavebox\footerright
 \def\setfooter#1#2#3{\savebox\footerright{\color{white}\hspace{0.3cm}#3\hspace{0.3cm}}
 	\updatemaxfooterwd{\wd\footerright}\leavevmode\hbox{%
-		\usebeamerfont{footline}%
-		\begin{beamercolorbox}[wd=\dimexpr\textwidth-\maxfooterwd\relax,ht=2.5ex,dp=1ex]{footline}%
-			\hspace{0.3cm}#1\hfill#2\hfill\null%
-		\end{beamercolorbox}%
-		\begin{beamercolorbox}[wd=\maxfooterwd,ht=2.5ex,dp=1ex]{footlineright}%
-			\centerline{\usebox\footerright}%
-		\end{beamercolorbox}%
-	}}
+	\usebeamerfont{footline}%
+	\begin{beamercolorbox}[wd=\dimexpr\textwidth-\maxfooterwd\relax,ht=2.5ex,dp=1ex]{footline}%
+		\hspace{0.3cm}#1\hfill#2\hfill\null%
+	\end{beamercolorbox}%
+	\begin{beamercolorbox}[wd=\maxfooterwd,ht=2.5ex,dp=1ex]{footlineright}%
+		\centerline{\usebox\footerright}%
+	\end{beamercolorbox}%
+}}
 
 \def\awesome@smalldot{\tikz[baseline=-.6ex]\node[circle,inner sep=0.16,draw=.,fill=.]{};}
 \def\awesome@fulldot{\tikz[baseline=-.6ex]\node[circle,inner sep=0.32ex,draw=.,fill=.]{};}
@@ -363,26 +448,26 @@
 			\hspace{.4em}%
 			\ifnum\framespersection>1%
 				\foreach \i in {1, ..., \framespersection}{%
-						\ifnum \i=\theframesinsection%
-							~\awesome@fulldot%
-						\else%
-							\setcounter{pagenumbertolinkto}{\i + \insertsectionstartframe}%
-							~\hyperlink{page:\thepagenumbertolinkto}{\awesome@emptydot}%
-						\fi%
-					}%
+					\ifnum \i=\theframesinsection%
+						~\awesome@fulldot%
+					\else%
+						\setcounter{pagenumbertolinkto}{\i + \insertsectionstartframe}%
+						~\hyperlink{page:\thepagenumbertolinkto}{\awesome@emptydot}%
+					\fi%
+				}%
 			\fi%
 		\else%
 			\hspace{.7em}\awesome@smalldot\hspace{.7em}\insertsubsection%
 			\hspace{.7em}%
 			\ifnum\framespersubsection>1%
 				\foreach \i in {1, ..., \framespersubsection}{%
-						\ifnum \i=\theframesinsubsection%
-							~\awesome@fulldot%
-						\else%
-							\setcounter{pagenumbertolinkto}{\i + \insertsubsectionstartframe}%
-							~\hyperlink{page:\thepagenumbertolinkto}{\awesome@emptydot}%
-						\fi%
-					}%
+					\ifnum \i=\theframesinsubsection%
+						~\awesome@fulldot%
+					\else%
+						\setcounter{pagenumbertolinkto}{\i + \insertsubsectionstartframe}%
+						~\hyperlink{page:\thepagenumbertolinkto}{\awesome@emptydot}%
+					\fi%
+				}%
 			\fi%
 		\fi%
 	}{\ifawesome@english Page\else Seite\fi~\insertframenumber~/~\inserttotalframenumber}%
@@ -421,145 +506,54 @@
 
 
 \AtBeginSection[]{\ifawesome@secslide
-		\begin{frame}[c,noframenumbering]\thispagestyle{navigation@sec}%
-			\begin{wide}\centering%
-				\usebeamerfont{title}%
-				\usebeamercolor[fg]{section number projected}%
-				\scalebox{1.3}{ \raisebox{-1pt}{\insertsectionnumber}}.~%
-				\usebeamercolor[fg]{title}%
-				\insertsectionhead%
-			\end{wide}%
-		\end{frame}
-	\fi}
+	\begin{frame}[c,noframenumbering]\thispagestyle{navigation@sec}%
+		\begin{wide}\centering%
+		\usebeamerfont{title}%
+		\usebeamercolor[fg]{section number projected}%
+		\scalebox{1.3}{ \raisebox{-1pt}{\insertsectionnumber}}.~%
+		\usebeamercolor[fg]{title}%
+		\insertsectionhead%
+		\end{wide}%
+	\end{frame}
+\fi}
 
 \AtBeginSubsection[]{\ifawesome@subsecslide
-		\begin{frame}[c,noframenumbering]\thispagestyle{navigation@sec}%
-			\begin{wide}\centering%
-				\usebeamerfont{title}%
-				\usebeamercolor[fg]{section number projected}%
-				\scalebox{1.3}{\raisebox{-1pt}{\insertsectionnumber}}.%
-				\usebeamercolor[fg]{subsection number projected}%
-				\textsubscript{\insertsubsectionnumber}~%
-				\usebeamercolor[fg]{title}%
-				\insertsubsectionhead%
-			\end{wide}%
-		\end{frame}
-	\fi}
-
-\newcommand{\profilepic}{data/presentation/images/Me.jpg}
+	\begin{frame}[c,noframenumbering]\thispagestyle{navigation@sec}%
+		\begin{wide}\centering%
+		\usebeamerfont{title}%
+		\usebeamercolor[fg]{section number projected}%
+		\scalebox{1.3}{\raisebox{-1pt}{\insertsectionnumber}}.%
+		\usebeamercolor[fg]{subsection number projected}%
+		\textsubscript{\insertsubsectionnumber}~%
+		\usebeamercolor[fg]{title}%
+		\insertsubsectionhead%
+		\end{wide}%
+	\end{frame}
+\fi}
 
 \AtEndDocument{
-
 	{\setbeamercolor{background canvas}{bg=accent}
-			\begin{frame}[t,noframenumbering]
-				\thispagestyle{navigation@titlepage}
-				\setbeamercolor{normal text}{fg=white}
-				\setbeamercolor{section in toc}{fg=white}
-				\setbeamercolor{subsection in toc}{fg=white}
-				\setbeamercolor{section number projected}{bg=white, fg=accent}
-				\frametitle{\textcolor{white}{Thanks for listening}}
-
-				\begin{columns}
-					\begin{column}{1.0\textwidth}
-						\vspace{-2cm}
-						\centering
-						\large
-						\color{white}
-						Thank you for your attention!
-					\end{column}
-				\end{columns}
-				\vfill
-				\vspace{1.5cm}
-				\begin{columns}
-					\color{black}
-					\begin{column}{0.45\textwidth}
-						\vfill
-						\flushleft
-						\large
-						\faGlobe\ \href{https://jonasheinle.de}{jonasheinle.de}
-						\\
-						\faEnvelope\ \href{mailto:contact@jonasheinle.de}{contact@jonasheinle.de}
-						\\
-						\faYoutube\ \href{https://www.youtube.com/@jotrockenmitlocken}{youtube.com/@jotrockenmitlocken}
-					\end{column}
-					\begin{column}{0.45\textwidth}
-						\vfill
-						\flushleft
-						\large
-						\faGithub\ \href{https://github.com/Kataglyphis}{github.com/Kataglyphis}
-						\\
-						\faLinkedin\ \href{https://www.linkedin.com/in/jonas-heinle-0b2a301a0/}{linkedin.com/in/jonas-heinle-0b2a301a0/}
-						\\
-						\faInstagram\ \href{https://www.instagram.com/jotrockenmitlocken}{instagram.com/jotrockenmitlocken}
-					\end{column}
-					\begin{column}{0.1\textwidth}
-						\vfill
-					\end{column}
-				\end{columns}
-			\end{frame}}
-
-		{\setbeamercolor{background canvas}{bg=accent}
-			\begin{frame}[t,noframenumbering]
-				\thispagestyle{navigation@titlepage}
-				\setbeamercolor{normal text}{fg=white}
-				\setbeamercolor{section in toc}{fg=white}
-				\setbeamercolor{subsection in toc}{fg=white}
-				\setbeamercolor{section number projected}{bg=white, fg=accent}
-				\frametitle{\textcolor{white}{About Me}}
-
-				\begin{columns}
-					\begin{column}{0.2\textwidth}
-						\hspace{-2cm}
-						\vspace{-2cm}
-						\centering
-						% Create a circular image
-						\begin{tikzpicture}
-							\clip (0,0) circle (2cm);
-							\node at (0,0) {\includegraphics[width=6.5cm]{\profilepic}};
-						\end{tikzpicture}
-					\end{column}
-					\begin{column}{0.8\textwidth}
-						\vspace{0.5cm}
-						\hspace{2cm}
-						\centering
-						\large
-						\begin{itemize}
-							\color{white}
-							\item[] Name: Jonas Heinle
-							\item[] Profession: AI, Rendering, Rust
-							\item[] Hobbies: Powerbuilding, Politik
-							\item[] Fun Fact: Lifting weights and programming are a perfect fit
-						\end{itemize}
-					\end{column}
-				\end{columns}
-				\vfill
-				\vspace{1.5cm}
-				\begin{columns}
-					\color{black}
-					\begin{column}{0.45\textwidth}
-						\vfill
-						\flushleft
-						\large
-						\faGlobe\ \href{https://jonasheinle.de}{jonasheinle.de}
-						\\
-						\faEnvelope\ \href{mailto:contact@jonasheinle.de}{contact@jonasheinle.de}
-						\\
-						\faYoutube\ \href{https://www.youtube.com/@jotrockenmitlocken}{youtube.com/@jotrockenmitlocken}
-					\end{column}
-					\begin{column}{0.45\textwidth}
-						\vfill
-						\flushleft
-						\large
-						\faGithub\ \href{https://github.com/Kataglyphis}{github.com/Kataglyphis}
-						\\
-						\faLinkedin\ \href{https://www.linkedin.com/in/jonas-heinle-0b2a301a0/}{linkedin.com/in/jonas-heinle-0b2a301a0/}
-						\\
-						\faInstagram\ \href{https://www.instagram.com/jotrockenmitlocken}{instagram.com/jotrockenmitlocken}
-					\end{column}
-					\begin{column}{0.1\textwidth}
-						\vfill
-					\end{column}
-				\end{columns}
-			\end{frame}}
+	\begin{frame}[c,noframenumbering]\thispagestyle{navigation@titlepage}%
+		\begin{wide}\color{white}%
+			\hypersetup{urlcolor=white,linkcolor=white,citecolor=white}
+			\begin{columns}[c,totalwidth=\linewidth]
+				\column{0.38\linewidth}
+				\centering
+				\begin{tikzpicture}
+					\clip (0,0) circle (1.65cm);
+					\node at (0,0) {\includegraphics[width=3.3cm,height=3.3cm,keepaspectratio]{/md2pdfLib/presentation/images/579706fe.jpg}};
+					\draw[white,line width=1.2pt] (0,0) circle (1.65cm);
+				\end{tikzpicture}
+				\column{0.62\linewidth}
+				{\Huge\textbf{Let's connect}}\\[-0.1em]
+				\rule{0.62\linewidth}{1.2pt}\\[0.55em]
+				{\LARGE\textbf{\insertauthor}}\\[0.25em]
+				{\small\textsc{Build \textbullet\ Share \textbullet\ Rust \textbullet\ LaTeX}}\\[0.8em]
+				{\scriptsize\insertinstitute\\\insertuni}\\[0.35em]
+				{\scriptsize\insertlocation~\insertdate}\\[0.35em]
+				{\scriptsize\insertemail}\\[0.25em]
+				{\Large\href{https://jonasheinle.de}{\underline{jonasheinle.de}}}%
+			\end{columns}
+		\end{wide}%
+	\end{frame}}
 }
-
