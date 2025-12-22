@@ -290,7 +290,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\newlength\awesome@sidebarwidth\setlength{\awesome@sidebarwidth}{0.02\paperwidth}
+\newlength\awesome@sidebarwidth\setlength{\awesome@sidebarwidth}{0.09\paperwidth}
 \newlength\awesome@textmargin\setlength{\awesome@textmargin}{0.05\paperwidth}
 \setbeamersize{description width=0.5cm}
 \setbeamersize{sidebar width left=\awesome@sidebarwidth}
@@ -329,9 +329,10 @@
 }
 
 \setbeamertemplate{frametitle}{%
-	\vspace{1em}\ifawesome@nonumbersinframetitle\ifbool{wideframe}{\hspace{-\awesome@sidebarwidth}}{}\else\hspace{-\awesome@sidebarwidth}\begin{beamercolorbox}[wd=\awesome@sidebarwidth]{frametitle}%
+	\vspace{1em}\ifawesome@nonumbersinframetitle\ifbool{wideframe}{\hspace{-\awesome@sidebarwidth}}{}\else\hspace{-\awesome@sidebarwidth}\begin{beamercolorbox}[wd=\awesome@sidebarwidth,right]{frametitle}%
+		\usebeamerfont{frametitle}%
 		\ifx\insertsection\empty\else%
-			\color{accent}\thesection%
+			{\color{accent}\scalebox{1.1}{\thesection}}%
 			\ifx\insertsubsection\empty%
 				\ifnum\framespersection>1%
 					.\color{black!25!white}\scalebox{.7}{\theframesinsection}%
@@ -344,7 +345,11 @@
 			\fi%
 		\fi
 	\end{beamercolorbox}\fi%
-	\begin{beamercolorbox}{frametitle}%
+	\ifawesome@nonumbersinframetitle%
+		\begin{beamercolorbox}{frametitle}%
+	\else%
+		\begin{beamercolorbox}[leftskip=1.2em]{frametitle}%
+	\fi%
 		\insertframetitle%
 	\end{beamercolorbox}
 	\ifx\usebeamercolor{subtitle}\insertframesubtitle\empty\else%
@@ -356,7 +361,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newtcolorbox{beamerbox}[3][]{boxrule=\smile@linewidth,
-IfBlankTF={#3}{toprule=2mm}{title=#3},colback=#2!5!white,colframe=#2!75!black,left=0em,
+IfBlankTF={#3}{toprule=2mm}{title=#3},colback=#2!5!white,colframe=#2!75!black,left=0.8em,
 lefttitle=4mm, arc=\smile@rounding, enhanced, segmentation engine=path,
 segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@linewidth},#1}
 
