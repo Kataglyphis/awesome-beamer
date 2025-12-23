@@ -276,7 +276,7 @@
 
 \setbeamerfont{footnote}{size=\tiny,shape=\normalfont}
 
-\setbeamerfont{frametitle}{size=\LARGE,shape=\bfseries\scshape}
+\setbeamerfont{frametitle}{size=\Large,shape=\bfseries\scshape}
 
 \setbeamerfont{framesubtitle}{size=\normalsize,shape=\normalfont}
 
@@ -498,7 +498,7 @@ segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@l
 		\ifdefined\@social
 			\insertsocial\par
 		\fi
-		\vspace{2em}
+		\vspace{1.5em}
 		\usebeamerfont{details}\usebeamercolor[fg]{details}%
 		\insertinstitute\\
 		\insertuni\\[2em]
@@ -517,10 +517,10 @@ segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@l
 				\includegraphics[height=\paperheight]{\@background}
 			};
 
-			\fill[black,path fading=title page picture fading,fading angle=-15]
+			\fill[accent!85,path fading=title page picture fading,fading angle=-15]
 				(current page.south east) rectangle ++(-10, \dimexpr\paperheight+1cm);
 
-			\draw[draw=accent,lcr,line width=4*\smile@linewidth]
+			\draw[draw=accent,lcr,line width=2*\smile@linewidth]
 				([shift={(-5.1,0)}]current page.north east)
 				-- ++(-3,-\paperheight);
 		\end{tikzpicture}
