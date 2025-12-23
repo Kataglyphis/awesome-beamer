@@ -519,10 +519,11 @@ segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@l
 
 			\fill[black,path fading=title page picture fading,fading angle=-15]
 				(current page.south east) rectangle ++(-10, \dimexpr\paperheight+1cm);
+
+			\draw[draw=accent,lcr,line width=4*\smile@linewidth]
+				([shift={(-5.1,0)}]current page.north east)
+				-- ++(-3,-\paperheight);
 		\end{tikzpicture}
-		\tikz[o]\draw[black,lcr,line width=2*\smile@linewidth]
-			([shift={(-5.1,0)}]current page.north east)
-			-- ++(-3,-\paperheight);
 	\fi
 \end{wide}}
 
