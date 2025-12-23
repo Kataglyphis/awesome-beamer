@@ -662,66 +662,88 @@ segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@l
 			\hypersetup{urlcolor=white,linkcolor=white,citecolor=white}
 			% Dynamic background with geometric shapes
 			\begin{tikzpicture}[remember picture,overlay]
-				% Floating circles
-				\foreach \x/\y/\r/\o in {2/1.5/0.8/0.06, 14/6/1.2/0.04, 12/1/0.5/0.08, 3/5.5/0.6/0.05, 15/4/0.4/0.07} {
+				% Gradient wave at bottom
+				\fill[white,opacity=0.04] (current page.south west) 
+					.. controls ([yshift=2cm]current page.south west) and ([yshift=3cm,xshift=4cm]current page.south west) 
+					.. ([yshift=1.5cm,xshift=8cm]current page.south west)
+					.. controls ([yshift=2.5cm,xshift=12cm]current page.south west) 
+					.. (current page.south east) -- cycle;
+				% Floating particles
+				\foreach \x/\y/\r/\o in {1/2/0.15/0.3, 2/5/0.1/0.25, 4/1/0.12/0.2, 13/5.5/0.18/0.25, 14/2/0.1/0.3, 15/4/0.08/0.35, 11/0.8/0.14/0.2} {
 					\fill[white,opacity=\o] (\x,\y) circle (\r cm);
 				}
-				% Hexagon pattern (honeycomb style)
-				\foreach \x in {0,2,4,6,8,10,12,14,16} {
-					\draw[white,opacity=0.03,line width=0.3pt] (\x,0) -- ++(60:1) -- ++(120:1) -- ++(180:1) -- ++(240:1) -- ++(300:1) -- cycle;
-				}
-				% Connecting lines (network effect)
-				\draw[white,opacity=0.1,line width=0.5pt] (1,1) -- (4,3) -- (2,5);
-				\draw[white,opacity=0.08,line width=0.5pt] (12,2) -- (14,4) -- (13,6);
-				\draw[white,opacity=0.06,line width=0.5pt] (6,0.5) -- (8,2) -- (10,1);
-				% Corner brackets
-				\draw[white,opacity=0.4,line width=2pt] ([shift={(0.6cm,-0.6cm)}]current page.north west) -- ++(0,-1.2cm);
-				\draw[white,opacity=0.4,line width=2pt] ([shift={(0.6cm,-0.6cm)}]current page.north west) -- ++(1.2cm,0);
-				\draw[white,opacity=0.4,line width=2pt] ([shift={(-0.6cm,0.6cm)}]current page.south east) -- ++(0,1.2cm);
-				\draw[white,opacity=0.4,line width=2pt] ([shift={(-0.6cm,0.6cm)}]current page.south east) -- ++(-1.2cm,0);
+				% Diagonal accent lines
+				\draw[white,opacity=0.15,line width=1.5pt] ([shift={(2cm,-2cm)}]current page.north west) -- ++(-1cm,3cm);
+				\draw[white,opacity=0.1,line width=1pt] ([shift={(3cm,-3cm)}]current page.north west) -- ++(-0.8cm,2.5cm);
+				\draw[white,opacity=0.15,line width=1.5pt] ([shift={(-2cm,2cm)}]current page.south east) -- ++(1cm,-3cm);
+				\draw[white,opacity=0.1,line width=1pt] ([shift={(-3cm,3cm)}]current page.south east) -- ++(0.8cm,-2.5cm);
+				% Corner brackets with glow
+				\fill[white,opacity=0.08] ([shift={(0.5cm,-0.5cm)}]current page.north west) rectangle ++(1.8cm,-0.15cm);
+				\fill[white,opacity=0.08] ([shift={(0.5cm,-0.5cm)}]current page.north west) rectangle ++(0.15cm,-1.8cm);
+				\draw[white,opacity=0.6,line width=2.5pt] ([shift={(0.5cm,-0.5cm)}]current page.north west) -- ++(0,-1.5cm);
+				\draw[white,opacity=0.6,line width=2.5pt] ([shift={(0.5cm,-0.5cm)}]current page.north west) -- ++(1.5cm,0);
+				\fill[white,opacity=0.08] ([shift={(-0.5cm,0.5cm)}]current page.south east) rectangle ++(-1.8cm,0.15cm);
+				\fill[white,opacity=0.08] ([shift={(-0.5cm,0.5cm)}]current page.south east) rectangle ++(-0.15cm,1.8cm);
+				\draw[white,opacity=0.6,line width=2.5pt] ([shift={(-0.5cm,0.5cm)}]current page.south east) -- ++(0,1.5cm);
+				\draw[white,opacity=0.6,line width=2.5pt] ([shift={(-0.5cm,0.5cm)}]current page.south east) -- ++(-1.5cm,0);
 			\end{tikzpicture}
 			\begin{columns}[c,totalwidth=\linewidth]
 				\column{0.38\linewidth}
 				\centering
-				% Profile image with animated-style rings
+				% Profile image with modern ring design
 				\begin{tikzpicture}
-					% Pulsing rings effect
-					\draw[white,opacity=0.06,line width=1pt,dashed] (0,0) circle (3.0cm);
-					\draw[white,opacity=0.10,line width=1.5pt] (0,0) circle (2.7cm);
-					\draw[white,opacity=0.15,line width=2pt] (0,0) circle (2.5cm);
-					% Orbit dots
-					\foreach \angle in {0,45,90,135,180,225,270,315} {
-						\fill[white,opacity=0.4] (\angle:2.7cm) circle (0.06cm);
+					% Outer decorative arcs
+					\draw[white,opacity=0.25,line width=2pt] (60:2.8cm) arc (60:120:2.8cm);
+					\draw[white,opacity=0.25,line width=2pt] (240:2.8cm) arc (240:300:2.8cm);
+					\draw[white,opacity=0.15,line width=1.5pt] (-30:2.9cm) arc (-30:30:2.9cm);
+					\draw[white,opacity=0.15,line width=1.5pt] (150:2.9cm) arc (150:210:2.9cm);
+					% Glow effect
+					\fill[white,opacity=0.12] (0,0) circle (2.5cm);
+					\fill[white,opacity=0.08] (0,0) circle (2.7cm);
+					% Main ring with gradient effect
+					\draw[white,line width=3pt,opacity=0.4] (0,0) circle (2.35cm);
+					\draw[white,line width=2pt] (0,0) circle (2.25cm);
+					% Corner dots
+					\foreach \angle in {45,135,225,315} {
+						\fill[white,opacity=0.5] (\angle:2.5cm) circle (0.08cm);
 					}
-					% Main glow
-					\fill[white,opacity=0.15] (0,0) circle (2.35cm);
-					% Inner ring
-					\draw[white,line width=2pt] (0,0) circle (2.2cm);
 					% Image
-					\clip (0,0) circle (2.15cm);
+					\clip (0,0) circle (2.2cm);
 					\node at (0,0) {\includegraphics[width=5cm,height=5cm,keepaspectratio]{/md2pdfLib/presentation/images/579706fe.jpg}};
 				\end{tikzpicture}
 				\column{0.62\linewidth}
-				% Title with sparkle effect
+				\centering
+				% Title with modern styling
 				\begin{tikzpicture}[baseline=(T.base)]
 					\node[inner sep=0] (T) {{\Huge\textbf{Keep in contact}}};
-					% Sparkles around title
-					\fill[white,opacity=0.6] ([shift={(-0.3cm,0.2cm)}]T.north west) -- ++(0.08,0.15) -- ++(0.08,-0.15) -- ++(-0.08,-0.15) -- cycle;
-					\fill[white,opacity=0.4] ([shift={(0.5cm,0.3cm)}]T.north east) circle (0.05cm);
-					\fill[white,opacity=0.5] ([shift={(0.2cm,-0.1cm)}]T.south east) -- ++(0.06,0.12) -- ++(0.06,-0.12) -- ++(-0.06,-0.12) -- cycle;
-				\end{tikzpicture}\\[0.3em]
-				% Wavy decorative line
+					% Accent bar to the left
+					\fill[white,opacity=0.8] ([shift={(-0.4cm,0.1cm)}]T.north west) rectangle ++(-0.12cm,-0.8cm);
+				\end{tikzpicture}\\[0.4em]
+				% Modern underline with gradient dots
 				\begin{tikzpicture}
-					\draw[white,line width=1.5pt] (0,0) sin (0.5,0.08) cos (1,0) sin (1.5,-0.08) cos (2,0) sin (2.5,0.08) cos (3,0) sin (3.5,-0.08) cos (4,0) sin (4.5,0.08) cos (5,0);
-				\end{tikzpicture}\\[1em]
-				% Author with underline accent
-				{\LARGE\textbf{\insertauthor}}\\[-0.1em]
-				\textcolor{white!50}{\rule{3cm}{0.5pt}}\\[0.6em]
-				% Institution
-				{\normalsize\bfseries\insertinstitute}\\[0.3em]
-				{\normalsize\insertuni}\\[0.8em]
-				% Contact
-				{\normalsize\mailicon\ \insertemail}\\[0.8em]
+					\foreach \x/\o in {0/0.3, 0.15/0.4, 0.3/0.5, 0.45/0.6, 0.6/0.7, 0.75/0.8, 0.9/0.9, 1.05/1.0} {
+						\fill[white,opacity=\o] (\x,0) circle (0.04cm);
+					}
+					\draw[white,line width=1.2pt] (1.2,0) -- (5.5cm,0);
+					\foreach \x/\o in {5.65/1.0, 5.8/0.9, 5.95/0.8, 6.1/0.7, 6.25/0.6, 6.4/0.5, 6.55/0.4, 6.7/0.3} {
+						\fill[white,opacity=\o] (\x,0) circle (0.04cm);
+					}
+				\end{tikzpicture}\\[1.2em]
+				% Author name
+				{\LARGE\textbf{\insertauthor}}\\[0.8em]
+				% Institution with icon-style prefix
+				\begin{tikzpicture}[baseline=-0.5ex]
+					\draw[white,line width=1pt] (0,0) -- (0.25,0.15) -- (0.5,0) -- (0.25,-0.15) -- cycle;
+				\end{tikzpicture}\hspace{0.5em}{\normalsize\bfseries\insertinstitute}\\[0.4em]
+				\begin{tikzpicture}[baseline=-0.5ex]
+					\fill[white,opacity=0.6] (0,0) circle (0.12cm);
+					\draw[white,line width=0.8pt] (0,0) circle (0.12cm);
+				\end{tikzpicture}\hspace{0.5em}{\normalsize\insertuni}\\[1em]
+				% Contact with styled icon
+				\begin{tikzpicture}[baseline=-0.5ex]
+					\draw[white,line width=1pt,rounded corners=1pt] (0,0) rectangle (0.35,0.25);
+					\draw[white,line width=0.8pt] (0,0.25) -- (0.175,0.12) -- (0.35,0.25);
+				\end{tikzpicture}\hspace{0.5em}{\normalsize\insertemail}\\[1em]
 				% Social links
 				\ifdefined\@social%
 					{\small%
