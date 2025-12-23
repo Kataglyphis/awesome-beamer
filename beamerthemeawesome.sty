@@ -479,18 +479,25 @@ segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@l
 \newlength\titlewidth
 \newlength\subtitlewidth
 \newlength\maxwidth
+\newlength\titleareawidth
 \setbeamertemplate{title page}{\begin{wide}
-	\def\titlecontent{\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle}%
+	\def\titlecontent{\usebeamerfont{title}\usebeamercolor[fg]{title}\parbox[t]{0.50\paperwidth}{\raggedright\inserttitle}}%
 	\def\subtitlecontent{\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle}%
 	\settowidth\titlewidth\titlecontent%
 	\settowidth\subtitlewidth\subtitlecontent%
 	\setlength\maxwidth{\ifdim\titlewidth>\subtitlewidth\titlewidth\else\subtitlewidth\fi}%
+	\setlength\titleareawidth{0.60\paperwidth}% Kleinerer Bereich für den Titel
 	\thispagestyle{navigation@titlepage}%
-	\begin{minipage}{\lhswidth}
+	\begin{minipage}{\titleareawidth}
 		\raggedright%
-		\titlecontent\\
-		\subtitlecontent\\
-		\textcolor{accent}{\rule{\ifdim\maxwidth<\lhswidth\maxwidth\else\lhswidth\fi}{\smile@linewidth}}\\[2em]
+		% Title with diagonal accent line
+		\begin{tikzpicture}[baseline=(title.base)]
+			\node[inner sep=0.6em, anchor=west] (title) {\titlecontent};
+			% Diagonal line matching the background line slope
+			\draw[accent,line width=1.6pt] ([xshift=0.3cm]title.north east) -- ++(-0.8cm,-1.8cm);
+		\end{tikzpicture}\\[0.5em]
+		\subtitlecontent\\[0.5em]
+		\textcolor{accent}{\rule{\ifdim\maxwidth<\titleareawidth\maxwidth\else\titleareawidth\fi}{\smile@linewidth}}\\[2em]
 		\usebeamerfont{author}\usebeamercolor[fg]{author}%
 		\insertauthor\\
 		\usebeamerfont{details}\usebeamercolor[fg]{details}%
@@ -523,6 +530,11 @@ segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@l
 			\draw[draw=accent,lcr,line width=2*\smile@linewidth]
 				([shift={(-5.1,0)}]current page.north east)
 				-- ++(-3,-\paperheight);
+
+			% Image source attribution
+			\node[anchor=south east,font=\tiny,opacity=0.6] at ([shift={(-0.3cm,0.3cm)}]current page.south east) {
+				\href{https://www.reddit.com/r/MemeRestoration/comments/u56bu0/}{\textcolor{white}{Image source}}
+			};
 		\end{tikzpicture}
 	\fi
 \end{wide}}
@@ -648,179 +660,75 @@ segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@l
 	\begin{frame}[c,noframenumbering]\thispagestyle{navigation@titlepage}%
 		\begin{wide}\color{white}%
 			\hypersetup{urlcolor=white,linkcolor=white,citecolor=white}
-			% Epic desert landscape with sand dunes
+			% Dynamic background with geometric shapes
 			\begin{tikzpicture}[remember picture,overlay]
-				% Sand dune layers - wavy pattern
-				\fill[white,opacity=0.06] (current page.south west) -- ([yshift=1.5cm]current page.south west) 
-					.. controls ([yshift=2cm,xshift=3cm]current page.south west) .. ([yshift=2.5cm,xshift=6cm]current page.south west)
-					.. controls ([yshift=3cm,xshift=9cm]current page.south west) .. ([yshift=2cm,xshift=12cm]current page.south west)
-					.. controls ([yshift=1cm,xshift=15cm]current page.south west) .. (current page.south east)
-					-- ([yshift=0cm]current page.south east) -- cycle;
-				\fill[white,opacity=0.04] (current page.south west) -- ([yshift=3cm]current page.south west)
-					.. controls ([yshift=4cm,xshift=4cm]current page.south west) .. ([yshift=4.5cm,xshift=8cm]current page.south west)
-					.. controls ([yshift=5cm,xshift=12cm]current page.south west) .. ([yshift=3.5cm,xshift=16cm]current page.south west)
-					.. controls ([yshift=2.5cm,xshift=20cm]current page.south west) .. (current page.south east)
-					-- ([yshift=2cm]current page.south east) -- cycle;
-				% Desert heat shimmer lines
-				\draw[white,opacity=0.10,line width=0.8pt] ([yshift=2cm]current page.south west) 
-					.. controls ([yshift=2.3cm,xshift=3cm]current page.south west) .. ([yshift=1.8cm,xshift=6cm]current page.south west);
-				\draw[white,opacity=0.08,line width=0.6pt] ([yshift=4.5cm]current page.south west)
-					.. controls ([yshift=4.8cm,xshift=3cm]current page.south west) .. ([yshift=4.2cm,xshift=6cm]current page.south west);
-				% Ant trails scattered across desert
-				\foreach \x in {1,3,5,7,9,11,13,15} {
-					\draw[white,opacity=0.12,line width=0.3pt] ([xshift=\x cm,yshift=1cm]current page.south west) -- ([xshift=\x cm,yshift=0.3cm]current page.south west);
+				% Floating circles
+				\foreach \x/\y/\r/\o in {2/1.5/0.8/0.06, 14/6/1.2/0.04, 12/1/0.5/0.08, 3/5.5/0.6/0.05, 15/4/0.4/0.07} {
+					\fill[white,opacity=\o] (\x,\y) circle (\r cm);
 				}
-				% Distant dunes (very faint)
-				\fill[white,opacity=0.02] (current page.north west) 
-					.. controls ([yshift=-1cm,xshift=4cm]current page.north west) .. ([yshift=-2cm,xshift=8cm]current page.north west)
-					.. controls ([yshift=-3cm,xshift=12cm]current page.north west) .. (current page.north east)
-					-- ([yshift=0cm]current page.north east) -- cycle;
+				% Hexagon pattern (honeycomb style)
+				\foreach \x in {0,2,4,6,8,10,12,14,16} {
+					\draw[white,opacity=0.03,line width=0.3pt] (\x,0) -- ++(60:1) -- ++(120:1) -- ++(180:1) -- ++(240:1) -- ++(300:1) -- cycle;
+				}
+				% Connecting lines (network effect)
+				\draw[white,opacity=0.1,line width=0.5pt] (1,1) -- (4,3) -- (2,5);
+				\draw[white,opacity=0.08,line width=0.5pt] (12,2) -- (14,4) -- (13,6);
+				\draw[white,opacity=0.06,line width=0.5pt] (6,0.5) -- (8,2) -- (10,1);
+				% Corner brackets
+				\draw[white,opacity=0.4,line width=2pt] ([shift={(0.6cm,-0.6cm)}]current page.north west) -- ++(0,-1.2cm);
+				\draw[white,opacity=0.4,line width=2pt] ([shift={(0.6cm,-0.6cm)}]current page.north west) -- ++(1.2cm,0);
+				\draw[white,opacity=0.4,line width=2pt] ([shift={(-0.6cm,0.6cm)}]current page.south east) -- ++(0,1.2cm);
+				\draw[white,opacity=0.4,line width=2pt] ([shift={(-0.6cm,0.6cm)}]current page.south east) -- ++(-1.2cm,0);
 			\end{tikzpicture}
 			\begin{columns}[c,totalwidth=\linewidth]
 				\column{0.38\linewidth}
 				\centering
-				% Decorative top left corner
-				\begin{tikzpicture}[remember picture, overlay]
-					\begin{scope}[shift={(current page.north west)},shift={(0.5cm,-0.5cm)}]
-						% Corner ornament
-						\foreach \i in {1,2,3} {
-							\draw[white,opacity=0.35,line width=0.4pt] (0,0) -- (\i*0.3cm,0);
-							\draw[white,opacity=0.35,line width=0.4pt] (0,0) -- (0,-\i*0.3cm);
-						}
-						\node[white,font=\tiny,opacity=0.4] at (0.5cm,-0.5cm) {\anticon};
-					\end{scope}
-				\end{tikzpicture}
-				% Epic image styling with sand glow (desert heat effect)
+				% Profile image with animated-style rings
 				\begin{tikzpicture}
-					% Sand glow layers (warm desert effect)
-					\fill[white,opacity=0.12] (0,0) circle (2.55cm);
-					\fill[white,opacity=0.18] (0,0) circle (2.40cm);
-					\fill[white,opacity=0.10] (0,0) circle (2.70cm);
-					% Desert sand rings
-					\draw[white,line width=2.5pt,opacity=0.35] (0,0) circle (2.30cm);
-					\draw[white,line width=1.2pt,opacity=0.45] (0,0) circle (2.20cm);
-					% Main image with clip
-					\clip (0,0) circle (2.10cm);
-					\node at (0,0) {\includegraphics[width=4.8cm,height=4.8cm,keepaspectratio]{/md2pdfLib/presentation/images/579706fe.jpg}};
-					\draw[white,line width=2pt] (0,0) circle (2.10cm);
-				\end{tikzpicture}
-				% Marching ant army - Cataglyphis tangential navigation style with enhancements
-				\begin{tikzpicture}[remember picture, overlay, shift={(current page.center)}]
-				\begin{scope}[shift={(-4.25cm,0.5cm)}]
-						% Concentric spiral paths - path integration concept
-						\foreach \radius in {1.8, 2.0, 2.2, 2.4} {
-							\draw[white,opacity=0.15,line width=0.3pt] (0,0) circle (\radius cm);
-						}
-						% Compass directional indicators (corrected: N is at top, E is at right)
-						\foreach \angle/\label in {90/N, 0/E, 270/S, 180/W} {
-							\node[white,font=\tiny,opacity=0.5] at (\angle:3.15cm) {\label};
-							\draw[white,opacity=0.4,line width=0.5pt] (\angle:3.05cm) -- (\angle:3.10cm);
-						}
-						% Tangential spiral paths showing Cataglyphis navigation
-						\foreach \angle in {0,30,60,90,120,150,180,210,240,270,300,330} {
-							% Multiple curved layers for depth
-							\draw[white,opacity=0.35,line width=1.2pt] 
-								(\angle:2.30cm) .. controls (\angle:2.50cm) and (\angle:2.75cm) .. (\angle:3.00cm);
-							\draw[white,opacity=0.55,line width=0.8pt] 
-								(\angle:2.30cm) .. controls (\angle:2.50cm) and (\angle:2.75cm) .. (\angle:3.00cm);
-							% Ant symbols at regular intervals
-							\node[white,font=\large] at (\angle:2.90cm) {\anticon};
-							% Directional indicators - small lines showing ant orientation
-							\draw[white,opacity=0.40,line width=0.3pt] (\angle:2.85cm) -- (\angle:2.95cm);
-						}
-						% Central reference circle (faint)
-						\draw[white,opacity=0.25,line width=0.5pt] (0,0) circle (2.30cm);
-						% Center dot for path integration start
-						\fill[white,opacity=0.50] (0,0) circle (0.08cm);
-					\end{scope}
-				\end{tikzpicture}
-				% Decorative bottom left corner
-				\begin{tikzpicture}[remember picture, overlay]
-					\begin{scope}[shift={(current page.south west)},shift={(0.5cm,0.5cm)}]
-						% Corner ornament
-						\foreach \i in {1,2,3} {
-							\draw[white,opacity=0.35,line width=0.4pt] (0,0) -- (\i*0.3cm,0);
-							\draw[white,opacity=0.35,line width=0.4pt] (0,0) -- (0,\i*0.3cm);
-						}
-						\node[white,font=\tiny,opacity=0.3] at (0.5cm,0.5cm) {\anticon};
-					\end{scope}
+					% Pulsing rings effect
+					\draw[white,opacity=0.06,line width=1pt,dashed] (0,0) circle (3.0cm);
+					\draw[white,opacity=0.10,line width=1.5pt] (0,0) circle (2.7cm);
+					\draw[white,opacity=0.15,line width=2pt] (0,0) circle (2.5cm);
+					% Orbit dots
+					\foreach \angle in {0,45,90,135,180,225,270,315} {
+						\fill[white,opacity=0.4] (\angle:2.7cm) circle (0.06cm);
+					}
+					% Main glow
+					\fill[white,opacity=0.15] (0,0) circle (2.35cm);
+					% Inner ring
+					\draw[white,line width=2pt] (0,0) circle (2.2cm);
+					% Image
+					\clip (0,0) circle (2.15cm);
+					\node at (0,0) {\includegraphics[width=5cm,height=5cm,keepaspectratio]{/md2pdfLib/presentation/images/579706fe.jpg}};
 				\end{tikzpicture}
 				\column{0.62\linewidth}
-				% Visual connection lines from image to text
-				\begin{tikzpicture}[remember picture, overlay]
-					\begin{scope}[shift={(current page.center)},shift={(0.8cm,0cm)}]
-						% Subtle connecting curves
-						\draw[white,opacity=0.15,line width=0.6pt] (-2.2cm,1.2cm) .. controls (-1.5cm,1.0cm) .. (-0.8cm,0.8cm);
-						\draw[white,opacity=0.15,line width=0.6pt] (-2.2cm,-1.2cm) .. controls (-1.5cm,-1.0cm) .. (-0.8cm,-0.8cm);
-					\end{scope}
-				\end{tikzpicture}
-				% Epic title with enhanced desert styling
-				\begin{tikzpicture}[baseline=(title.base)]
-					% Title shadow effect
-					\node[inner sep=0,color=white,opacity=0.20] at (0.05,-0.05) {{\Huge\textbf{Keep in contact}}};
-					\node[inner sep=0] (title) {{\Huge\textbf{Keep in contact}}};
-					% Enhanced decorative underline with multiple layers
-					\draw[white,line width=1.2pt,opacity=0.7] ([xshift=-0.5cm]title.south west) -- ([xshift=0.5cm]title.south east);
-					\draw[white,line width=0.6pt,opacity=0.5] ([xshift=-0.45cm,yshift=-0.12cm]title.south west) -- ([xshift=0.45cm,yshift=-0.12cm]title.south east);
-					\draw[white,line width=0.3pt,opacity=0.35] ([xshift=-0.4cm,yshift=-0.20cm]title.south west) -- ([xshift=0.4cm,yshift=-0.20cm]title.south east);
-					% Side accent lines
-					\draw[white,line width=1.5pt,opacity=0.4] ([xshift=-0.65cm,yshift=-0.05cm]title.north west) -- ([xshift=-0.65cm,yshift=-0.25cm]title.south west);
-					\draw[white,line width=1.5pt,opacity=0.4] ([xshift=0.65cm,yshift=-0.05cm]title.north east) -- ([xshift=0.65cm,yshift=-0.25cm]title.south east);
-				\end{tikzpicture}\\[0.2em]
-				% Enhanced desert horizon divider
-				\begin{tikzpicture}
-					\shade[left color=white!30,middle color=white,right color=white!10] (0,0) rectangle (0.62\linewidth,0.06cm);
-					\draw[white,opacity=0.5,line width=0.3pt] (0,0) -- (0.62\linewidth,0);
+				% Title with sparkle effect
+				\begin{tikzpicture}[baseline=(T.base)]
+					\node[inner sep=0] (T) {{\Huge\textbf{Keep in contact}}};
+					% Sparkles around title
+					\fill[white,opacity=0.6] ([shift={(-0.3cm,0.2cm)}]T.north west) -- ++(0.08,0.15) -- ++(0.08,-0.15) -- ++(-0.08,-0.15) -- cycle;
+					\fill[white,opacity=0.4] ([shift={(0.5cm,0.3cm)}]T.north east) circle (0.05cm);
+					\fill[white,opacity=0.5] ([shift={(0.2cm,-0.1cm)}]T.south east) -- ++(0.06,0.12) -- ++(0.06,-0.12) -- ++(-0.06,-0.12) -- cycle;
 				\end{tikzpicture}\\[0.3em]
-				% Name with enhanced styling
-				{{\LARGE\textbf{\insertauthor}}}\\[0.2em]
-				% Tagline with improved spacing
-				{\small\textsc{%
-					\anticon\ \textbf{Navigate}\ $\bullet$\ \textbf{Optimize}\ $\bullet$\ \textbf{Collaborate}\ $\bullet$\ \textbf{Innovate}\ \anticon%
-				}}\\[0.4em]
-				% Info section with enhanced styling
+				% Wavy decorative line
 				\begin{tikzpicture}
-					% Background layers for depth
-					\fill[white,opacity=0.08] (-0.3,-0.35) rectangle (0.3,0.35) (0,0) circle (0.40cm);
-					\node[inner sep=6pt,rounded corners=5pt,fill=black,fill opacity=0.32,draw=white,line width=0.8pt,draw opacity=0.55] (info) {%
-						\begin{minipage}{0.56\linewidth}
-							\centering
-							{\scriptsize\bfseries\insertinstitute}\\[0.08em]
-							{\tiny\insertuni}\\[0.25em]
-							{\scriptsize\insertlocation\ \textbullet\ \insertdate}\\[0.18em]
-							{\scriptsize\mailicon\ \insertemail}
-						\end{minipage}
-					};
-					% Enhanced decorative corners - all four corners
-					\draw[white,opacity=0.3,line width=0.5pt] ([xshift=-0.35cm,yshift=0.35cm]info.north west) -- ([xshift=-0.10cm,yshift=0.35cm]info.north west);
-					\draw[white,opacity=0.3,line width=0.5pt] ([xshift=-0.35cm,yshift=0.35cm]info.north west) -- ([xshift=-0.35cm,yshift=0.15cm]info.north west);
-					\draw[white,opacity=0.3,line width=0.5pt] ([xshift=0.35cm,yshift=0.35cm]info.north east) -- ([xshift=0.10cm,yshift=0.35cm]info.north east);
-					\draw[white,opacity=0.3,line width=0.5pt] ([xshift=0.35cm,yshift=0.35cm]info.north east) -- ([xshift=0.35cm,yshift=0.15cm]info.north east);
-					\draw[white,opacity=0.25,line width=0.5pt] ([xshift=-0.35cm,yshift=-0.35cm]info.south west) -- ([xshift=-0.10cm,yshift=-0.35cm]info.south west);
-					\draw[white,opacity=0.25,line width=0.5pt] ([xshift=-0.35cm,yshift=-0.35cm]info.south west) -- ([xshift=-0.35cm,yshift=-0.15cm]info.south west);
-				\end{tikzpicture}\\[0.25em]
-				% Website link with enhanced styling
-				% Decorative top right corner
-				\begin{tikzpicture}[remember picture, overlay]
-					\begin{scope}[shift={(current page.north east)},shift={(-0.5cm,-0.5cm)}]
-						% Corner ornament
-						\foreach \i in {1,2,3} {
-							\draw[white,opacity=0.35,line width=0.4pt] (0,0) -- (-\i*0.3cm,0);
-							\draw[white,opacity=0.35,line width=0.4pt] (0,0) -- (0,-\i*0.3cm);
-						}
-						\node[white,font=\tiny,opacity=0.4] at (-0.5cm,-0.5cm) {\anticon};
-					\end{scope}
-				\end{tikzpicture}
-				% Social links section with enhanced styling
+					\draw[white,line width=1.5pt] (0,0) sin (0.5,0.08) cos (1,0) sin (1.5,-0.08) cos (2,0) sin (2.5,0.08) cos (3,0) sin (3.5,-0.08) cos (4,0) sin (4.5,0.08) cos (5,0);
+				\end{tikzpicture}\\[1em]
+				% Author with underline accent
+				{\LARGE\textbf{\insertauthor}}\\[-0.1em]
+				\textcolor{white!50}{\rule{3cm}{0.5pt}}\\[0.6em]
+				% Institution
+				{\normalsize\bfseries\insertinstitute}\\[0.3em]
+				{\normalsize\insertuni}\\[0.8em]
+				% Contact
+				{\normalsize\mailicon\ \insertemail}\\[0.8em]
+				% Social links
 				\ifdefined\@social%
 					{\small%
 					\begingroup
 					\let\socialbadge\socialbadgeinverse%
 					\let\socialitem\socialiteminverse%
-					\begin{tabular}{ll}
-						\insertsocial & \\[0.3em]
-						\socialiteminverse{YT}{YouTube}{https://www.youtube.com/@jotrockenmitlocken} & 
-					\end{tabular}
+					\insertsocial
 					\endgroup
 					}%
 				\fi
