@@ -498,13 +498,14 @@ segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@l
 			% Diagonal line matching the background line slope
 			\draw[accent,line width=1.6pt] ([xshift=0.3cm]title.north east) -- ++(-0.8cm,-1.8cm);
 		\end{tikzpicture}\\[0.1em]
-		\subtitlecontent\\[0.1em]
+		\subtitlecontent\\[0.3em]
 		\textcolor{accent}{\rule{\ifdim\maxwidth<\titleareawidth\maxwidth\else\titleareawidth\fi}{\smile@linewidth}}\\[0.5em]
-		\vspace{0.05em}
+		\vspace{0.75em}
 		{\usebeamercolor{title info box}%
 		\begin{tcolorbox}[
 			enhanced,
 			boxrule=\smile@linewidth,
+			borderline west={2\smile@linewidth}{0pt}{accent},
 			arc=\smile@rounding,
 			colback=bg,
 			colframe=accent,
@@ -518,22 +519,31 @@ segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@l
 			bottom=0.45em
 		]
 			\raggedright
-			{\usebeamerfont{author}\strut\insertauthor\par}
+			{\usebeamerfont{subtitle}\bfseries\strut\insertauthor\par}
 			\vspace{0.15em}
-			{\usebeamerfont{details}\strut\insertemail\par}
+			{\usebeamerfont{details}\ttfamily\strut\insertemail\par}
 			\ifdefined\@social
 				\vspace{0.15em}
-				{\usebeamerfont{details}\strut\insertsocial\par}
+				{\usebeamerfont{footline}\strut\insertsocial\par}
 			\fi
 		\end{tcolorbox}}
-		\vspace{0.7em}
+		\vspace{1.4em}
 		{\usebeamerfont{details}\usebeamercolor[fg]{details}%
 			\textcolor{accent}{\rule{0.55\titleareawidth}{0.6\smile@linewidth}}\\[0.4em]
-			{\usebeamerfont{subtitle}\usebeamercolor[fg]{title}\insertinstitute\par}
-			\vspace{0.05em}
-			\insertuni\par
-			\vspace{1.4em}
-			{\usebeamerfont{footline}\insertdate}%
+			\begin{tikzpicture}[baseline=(inst.base)]
+				\node[inner xsep=0pt, inner ysep=0pt, anchor=west] (inst) {%
+					\parbox[t]{0.55\titleareawidth}{%
+						\raggedright
+						{\usebeamerfont{details}\usebeamercolor[fg]{title}\insertinstitute\par}%
+						\vspace{0.05em}
+						\insertuni\par
+						\vspace{1.4em}
+						{\usebeamerfont{footline}\insertdate}%
+					}%
+				};
+				% Diagonal accent line like the title's
+				\draw[accent,line width=1.6pt] ([xshift=0.25cm]inst.north east) -- ++(-0.6cm,-1.4cm);
+			\end{tikzpicture}%
 		}
 	\end{minipage}
 
@@ -552,7 +562,7 @@ segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@l
 			\fill[accent!85,path fading=title page picture fading,fading angle=-15]
 				(current page.south east) rectangle ++(-10, \dimexpr\paperheight+1cm);
 
-			\draw[draw=accent,lcr,line width=2*\smile@linewidth]
+			\draw[draw=accent,lcr,line width=2\smile@linewidth]
 				([shift={(-5.1,0)}]current page.north east)
 				-- ++(-3,-\paperheight);
 
@@ -681,7 +691,7 @@ segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@l
 \fi}
 
 \AtEndDocument{
-	{\setbeamercolor{background canvas}{bg=accent}
+	{\setbeamercolor{background canvas}{bg=accent!80!black}
 	\begin{frame}[c,noframenumbering]\thispagestyle{navigation@titlepage}%
 		\begin{wide}\color{white}%
 			\hypersetup{urlcolor=white,linkcolor=white,citecolor=white}
