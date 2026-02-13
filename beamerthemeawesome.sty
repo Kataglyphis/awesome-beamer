@@ -249,6 +249,8 @@
 \setbeamercolor{details}{fg=black}
 \setbeamercolor{author}{fg=black}
 
+\setbeamercolor{title info box}{fg=black, bg=accent!6!white}
+
 \setbeamercolor{section number projected}{bg=black, fg=accent}
 \setbeamercolor{subsection number projected}{fg=lightgray, fg=accent}
 
@@ -482,7 +484,7 @@ segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@l
 \newlength\titleareawidth
 \setbeamertemplate{title page}{\begin{wide}
 	\def\titlecontent{\usebeamerfont{title}\usebeamercolor[fg]{title}\parbox[t]{0.50\paperwidth}{\raggedright\inserttitle}}%
-	\def\subtitlecontent{\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle}%
+	\def\subtitlecontent{\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\parbox[t]{0.50\paperwidth}{\raggedright\insertsubtitle}}%
 	\settowidth\titlewidth\titlecontent%
 	\settowidth\subtitlewidth\subtitlecontent%
 	\setlength\maxwidth{\ifdim\titlewidth>\subtitlewidth\titlewidth\else\subtitlewidth\fi}%
@@ -492,24 +494,47 @@ segmentation style={lcr, solid, shorten >=1mm,shorten <=1mm, line width=\smile@l
 		\raggedright%
 		% Title with diagonal accent line
 		\begin{tikzpicture}[baseline=(title.base)]
-			\node[inner sep=0.6em, anchor=west] (title) {\titlecontent};
+			\node[inner xsep=0pt, inner ysep=0.6em, anchor=west] (title) {\titlecontent};
 			% Diagonal line matching the background line slope
 			\draw[accent,line width=1.6pt] ([xshift=0.3cm]title.north east) -- ++(-0.8cm,-1.8cm);
-		\end{tikzpicture}\\[0.5em]
-		\subtitlecontent\\[0.5em]
-		\textcolor{accent}{\rule{\ifdim\maxwidth<\titleareawidth\maxwidth\else\titleareawidth\fi}{\smile@linewidth}}\\[2em]
-		\usebeamerfont{author}\usebeamercolor[fg]{author}%
-		\insertauthor\\
-		\usebeamerfont{details}\usebeamercolor[fg]{details}%
-		\insertemail\par
-		\ifdefined\@social
-			\insertsocial\par
-		\fi
-		\vspace{1.5em}
-		\usebeamerfont{details}\usebeamercolor[fg]{details}%
-		\insertinstitute\\
-		\insertuni\\[2em]
-		\insertdate
+		\end{tikzpicture}\\[0.1em]
+		\subtitlecontent\\[0.1em]
+		\textcolor{accent}{\rule{\ifdim\maxwidth<\titleareawidth\maxwidth\else\titleareawidth\fi}{\smile@linewidth}}\\[0.5em]
+		\vspace{0.05em}
+		{\usebeamercolor{title info box}%
+		\begin{tcolorbox}[
+			enhanced,
+			boxrule=\smile@linewidth,
+			arc=\smile@rounding,
+			colback=bg,
+			colframe=accent,
+			coltext=fg,
+			boxsep=0pt,
+			before skip=0pt,
+			after skip=0pt,
+			left=0.8em,
+			right=0.8em,
+			top=0.45em,
+			bottom=0.45em
+		]
+			\raggedright
+			{\usebeamerfont{author}\strut\insertauthor\par}
+			\vspace{0.15em}
+			{\usebeamerfont{details}\strut\insertemail\par}
+			\ifdefined\@social
+				\vspace{0.15em}
+				{\usebeamerfont{details}\strut\insertsocial\par}
+			\fi
+		\end{tcolorbox}}
+		\vspace{0.7em}
+		{\usebeamerfont{details}\usebeamercolor[fg]{details}%
+			\textcolor{accent}{\rule{0.55\titleareawidth}{0.6\smile@linewidth}}\\[0.4em]
+			{\usebeamerfont{subtitle}\usebeamercolor[fg]{title}\insertinstitute\par}
+			\vspace{0.05em}
+			\insertuni\par
+			\vspace{1.4em}
+			{\usebeamerfont{footline}\insertdate}%
+		}
 	\end{minipage}
 
 	\ifdefined\@background
